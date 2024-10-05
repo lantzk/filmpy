@@ -63,9 +63,14 @@ def rotate(
         if isinstance(frame, list):
             frame = np.array([[ord(char) for char in row] for row in frame])
         
-        img = Image.fromarray(frame.astype(np.uint8))
+        # Handle mask clips
+        if clip.is_mask:
+            frame = (frame * 255).astype(np.uint8)
+            img = Image.fromarray(frame, mode='L')
+        else:
+            img = Image.fromarray(frame.astype(np.uint8))
 
-        _bg_color = bg_color if bg_color is not None else ((0, 0, 0) if img.mode == 'RGB' else 255)
+        _bg_color = bg_color if bg_color is not None else (0 if clip.is_mask else (0, 0, 0))
 
         kwargs = {'expand': expand}
         for PIL_rotate_kw_name, (kw_name, supported, min_version) in PIL_rotate_kwargs_supported.items():
@@ -93,6 +98,12 @@ def rotate(
         if translate and PIL_rotate_kwargs_supported["translate"][1]:
             rotated = ImageChops.offset(rotated, int(translate[0]), int(translate[1]))
 
-        return np.array(rotated)
+        result = np.array(rotated)
+        
+        # Convert back to float for mask clips
+        if clip.is_mask:
+            result = result.astype(float) / 255.0
+
+        return result
 
     return clip.transform(filter, apply_to=["mask"])
