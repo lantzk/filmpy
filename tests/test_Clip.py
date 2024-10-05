@@ -3,11 +3,10 @@
 import copy
 
 import numpy as np
-
 import pytest
 
-from moviepy.Clip import Clip
-from moviepy.video.VideoClip import BitmapClip, ColorClip
+from cinemapy.Clip import Clip
+from cinemapy.video.VideoClip import BitmapClip, ColorClip
 
 
 def test_clip_equality():
@@ -187,10 +186,11 @@ def test_clip_copy(copy_func):
     ),
 )
 def test_clip_subclip(duration, start_time, end_time, expected_duration):
-    if duration is None:
-        clip = ColorClip(color=(255, 0, 0), size=(2, 2)).with_fps(1)
-    else:
-        clip = BitmapClip([["RR", "GG"] for _ in range(duration)], fps=1)
+    clip = (
+        ColorClip(color=(255, 0, 0), size=(2, 2)).with_fps(1)
+        if duration is None
+        else BitmapClip([["RR", "GG"] for _ in range(duration)], fps=1)
+    )
 
     if hasattr(expected_duration, "__traceback__"):
         with pytest.raises(expected_duration):

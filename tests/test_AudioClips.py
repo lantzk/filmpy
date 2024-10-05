@@ -3,16 +3,15 @@
 import os
 
 import numpy as np
-
 import pytest
 
-from moviepy.audio.AudioClip import (
+from cinemapy.audio.AudioClip import (
     AudioArrayClip,
     AudioClip,
     CompositeAudioClip,
     concatenate_audioclips,
 )
-from moviepy.audio.io.AudioFileClip import AudioFileClip
+from cinemapy.audio.io.AudioFileClip import AudioFileClip
 
 
 def test_audioclip(util, mono_wave):
@@ -189,7 +188,7 @@ def test_audioclip_stereo_max_volume(nchannels, channel_muted):
     def make_frame(t):
         frame = []
         # build channels (one of each pair muted)
-        for i in range(int(nchannels / 2)):
+        for _i in range(int(nchannels / 2)):
             if channel_muted == "left":
                 # if muted channel is left, [0, sound, 0, sound...]
                 frame.append(np.sin(t * 0))

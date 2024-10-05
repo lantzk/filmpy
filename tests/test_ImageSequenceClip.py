@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
+from cinemapy.video.io.ImageSequenceClip import ImageSequenceClip
 
 
 def test_1(util):

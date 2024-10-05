@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-"""MoviePy setup script."""
+"""cinemapy setup script."""
 
 import sys
 from pathlib import Path
-
 
 try:
     from setuptools import find_packages, setup
@@ -15,7 +14,7 @@ except ImportError:
         ez_setup.use_setuptools()
     except ImportError:
         raise ImportError(
-            "MoviePy could not be installed, probably because "
+            "cinemapy could not be installed, probably because "
             "neither setuptools nor ez_setup are installed on this computer.\n"
             "Install setuptools with $ (sudo) pip install setuptools and "
             "try again."
@@ -45,7 +44,7 @@ class PyTest(TestCommand):
         except ImportError:
             raise ImportError(
                 "Running tests requires additional dependencies.\n"
-                "Please run $ pip install moviepy[test]"
+                "Please run $ pip install cinemapy[test]"
             )
 
         errno = pytest.main(self.pytest_args.split(" "))
@@ -60,12 +59,12 @@ if "build_docs" in sys.argv:
     except ImportError:
         raise ImportError(
             "Running the documentation builds has additional dependencies.\n"
-            "Please run $ pip install moviepy[doc]"
+            "Please run $ pip install cinemapy[doc]"
         )
 
     cmdclass["build_docs"] = BuildDoc
 
-__version__ = Path("moviepy/version.py").read_text().strip().split('"')[1][:-1]
+__version__ = Path("cinemapy/version.py").read_text().strip().split('"')[1][:-1]
 
 
 # Define the requirements for specific execution needs.
@@ -122,14 +121,14 @@ extra_reqs = {
 readme = Path("README.rst").read_text()
 
 setup(
-    name="moviepy",
+    name="cinemapy",
     version=__version__,
     author="Zulko 2017",
     description="Video editing with Python",
     long_description=readme,
-    url="https://zulko.github.io/moviepy/",
+    url="https://zulko.github.io/cinemapy/",
     project_urls={
-        "Source": "https://github.com/Zulko/moviepy",
+        "Source": "https://github.com/Zulko/cinemapy",
     },
     license="MIT License",
     classifiers=[

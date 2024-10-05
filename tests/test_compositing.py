@@ -3,14 +3,16 @@
 import os
 
 import numpy as np
-
 import pytest
 
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
-from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.compositing.transitions import slide_in, slide_out
-from moviepy.video.fx.resize import resize
-from moviepy.video.VideoClip import BitmapClip, ColorClip
+from cinemapy.video.compositing.CompositeVideoClip import (
+    CompositeVideoClip,
+    clips_array,
+)
+from cinemapy.video.compositing.concatenate import concatenate_videoclips
+from cinemapy.video.compositing.transitions import slide_in, slide_out
+from cinemapy.video.fx.resize import resize
+from cinemapy.video.VideoClip import BitmapClip, ColorClip
 
 
 class ClipPixelTest:
@@ -19,16 +21,16 @@ class ClipPixelTest:
     def __init__(self, clip):
         self.clip = clip
 
-    def expect_color_at(self, ts, expected, xy=[0, 0]):
+    def expect_color_at(self, ts, expected, xy=None):
+        if xy is None:
+            xy = [0, 0]
         frame = self.clip.make_frame(ts)
         r, g, b = expected
         actual = frame[xy[1]][xy[0]]
         diff = abs(actual[0] - r) + abs(actual[1] - g) + abs(actual[2] - b)
 
         mismatch = diff > ClipPixelTest.ALLOWABLE_COLOR_VARIATION
-        assert (
-            not mismatch
-        ), "Expected (%02x,%02x,%02x) but got (%02x,%02x,%02x) at timestamp %s" % (
+        assert not mismatch, "Expected ({:02x},{:02x},{:02x}) but got ({:02x},{:02x},{:02x}) at timestamp {}".format(
             *expected,
             *actual,
             ts,
@@ -158,7 +160,7 @@ def test_slide_in():
             if n_reds_expected == 7:  # skip 7 due to inaccurate frame
                 continue
 
-            for r, g, b in new_clip.get_frame(t)[0]:
+            for r, g, _b in new_clip.get_frame(t)[0]:
                 if r == color[0] and g == color[1] and g == color[2]:
                     n_reds += 1
 
@@ -183,7 +185,7 @@ def test_slide_in():
                 continue
 
             for row in new_clip.get_frame(t):
-                r, g, b = row[0]
+                r, g, _b = row[0]
 
                 if r == color[0] and g == color[1] and g == color[2]:
                     n_reds += 1
@@ -213,7 +215,7 @@ def test_slide_out():
             if t:
                 assert n_reds_expected
 
-            for r, g, b in new_clip.get_frame(t)[0]:
+            for r, g, _b in new_clip.get_frame(t)[0]:
                 if r == color[0] and g == color[1] and g == color[2]:
                     n_reds += 1
 
@@ -235,7 +237,7 @@ def test_slide_out():
                 assert n_reds_expected
 
             for row in new_clip.get_frame(t):
-                r, g, b = row[0]
+                r, g, _b = row[0]
 
                 if r == color[0] and g == color[1] and g == color[2]:
                     n_reds += 1

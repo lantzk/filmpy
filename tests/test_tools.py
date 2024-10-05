@@ -10,8 +10,8 @@ import sys
 
 import pytest
 
-import moviepy.tools as tools
-from moviepy.video.io.downloader import download_webfile
+import cinemapy.tools as tools
+from cinemapy.video.io.downloader import download_webfile
 
 
 @pytest.mark.parametrize(
@@ -69,7 +69,7 @@ def test_subprocess_call(command):
 
 @pytest.mark.parametrize("os_name", (os.name, "nt"))
 def test_cross_platform_popen_params(os_name, monkeypatch):
-    tools_module = importlib.import_module("moviepy.tools")
+    tools_module = importlib.import_module("cinemapy.tools")
     monkeypatch.setattr(tools_module, "OS_NAME", os_name)
 
     params = tools_module.cross_platform_popen_params({})
@@ -84,7 +84,7 @@ def test_deprecated_version_of(old_name):
     func = tools.deprecated_version_of(to_file, old_name)
 
     expected_warning_message = (
-        f"MoviePy: The function ``{old_name}`` is deprecated and is kept"
+        f"cinemapy: The function ``{old_name}`` is deprecated and is kept"
         " temporarily for backwards compatibility.\nPlease use the new name"
         f", ``{to_file.__name__}``, instead."
     )
@@ -107,12 +107,10 @@ def test_deprecated_version_of(old_name):
     ),
 )
 def test_download_webfile(static_files_server, util, url, expected_result):
-    filename = os.path.join(util.TMP_DIR, "moviepy_downloader_test.mp4")
+    filename = os.path.join(util.TMP_DIR, "cinemapy_downloader_test.mp4")
     if os.path.isfile(filename):
-        try:
+        with contextlib.suppress(PermissionError):
             os.remove(filename)
-        except PermissionError:
-            pass
 
     if hasattr(expected_result, "__traceback__") or len(url) == 11:
         if not shutil.which("youtube-dl"):
@@ -135,10 +133,8 @@ def test_download_webfile(static_files_server, util, url, expected_result):
         assert filecmp.cmp(filename, expected_result)
 
     if os.path.isfile(filename):
-        try:
+        with contextlib.suppress(PermissionError):
             os.remove(filename)
-        except PermissionError:
-            pass
 
 
 @pytest.mark.skipif(os.name != "posix", reason="Doesn't works in Windows")
@@ -204,8 +200,8 @@ def test_config(
     imagemagick_binary_isfile,
     imagemagick_binary_isdir,
 ):
-    if "moviepy.config" in sys.modules:
-        del sys.modules["moviepy.config"]
+    if "cinemapy.config" in sys.modules:
+        del sys.modules["cinemapy.config"]
 
     if ffmpeg_binary_error is not None and os.path.isfile(ffmpeg_binary):
         os.remove(ffmpeg_binary)
@@ -226,15 +222,15 @@ def test_config(
 
     if ffmpeg_binary_error is not None:
         with pytest.raises(ffmpeg_binary_error[0]) as exc:
-            importlib.import_module("moviepy.config")
+            importlib.import_module("cinemapy.config")
         assert ffmpeg_binary_error[1] in str(exc.value)
     else:
         if imagemagick_binary_error is not None:
             with pytest.raises(imagemagick_binary_error[0]) as exc:
-                importlib.import_module("moviepy.config")
+                importlib.import_module("cinemapy.config")
             assert imagemagick_binary_error[1] in str(exc.value)
         else:
-            importlib.import_module("moviepy.config")
+            importlib.import_module("cinemapy.config")
 
     if prev_ffmpeg_binary is not None:
         os.environ["FFMPEG_BINARY"] = prev_ffmpeg_binary
@@ -242,13 +238,13 @@ def test_config(
     if prev_imagemagick_binary is not None:
         os.environ["IMAGEMAGICK_BINARY"] = prev_imagemagick_binary
 
-    if "moviepy.config" in sys.modules:
-        del sys.modules["moviepy.config"]
+    if "cinemapy.config" in sys.modules:
+        del sys.modules["cinemapy.config"]
 
 
 def test_config_check():
-    if "moviepy.config" in sys.modules:
-        del sys.modules["moviepy.config"]
+    if "cinemapy.config" in sys.modules:
+        del sys.modules["cinemapy.config"]
 
     try:
         dotenv_module = importlib.import_module("dotenv")
@@ -258,16 +254,16 @@ def test_config_check():
         with open(".env", "w") as f:
             f.write("")
 
-    moviepy_config_module = importlib.import_module("moviepy.config")
+    cinemapy_config_module = importlib.import_module("cinemapy.config")
 
     stdout = io.StringIO()
     with contextlib.redirect_stdout(stdout):
-        moviepy_config_module.check()
+        cinemapy_config_module.check()
 
     output = stdout.getvalue()
 
-    assert "MoviePy: ffmpeg successfully found in" in output
-    assert "MoviePy: ImageMagick successfully found in" in output
+    assert "cinemapy: ffmpeg successfully found in" in output
+    assert "cinemapy: ImageMagick successfully found in" in output
 
     if dotenv_module:
         assert os.path.isfile(".env")
@@ -275,8 +271,8 @@ def test_config_check():
         assert ".env file content at" in output
         del sys.modules["dotenv"]
 
-    if "moviepy.config" in sys.modules:
-        del sys.modules["moviepy.config"]
+    if "cinemapy.config" in sys.modules:
+        del sys.modules["cinemapy.config"]
 
 
 @pytest.mark.skipif(sys.version_info < (3, 8), reason="Requires Python 3.8 or greater")
@@ -285,7 +281,7 @@ def test_config_check():
     ("convert_parameter_to_seconds", "convert_path_to_string"),
 )
 def test_decorators_argument_converters_consistency(
-    moviepy_modules, functions_with_decorator_defined, decorator_name
+    cinemapy_modules, functions_with_decorator_defined, decorator_name
 ):
     """Checks that for all functions that have a decorator defined (like
     ``@convert_parameter_to_seconds``), the parameters passed to the decorator
@@ -302,7 +298,7 @@ def test_decorators_argument_converters_consistency(
     added.
     """
     with contextlib.redirect_stdout(io.StringIO()):
-        for modname, ispkg in moviepy_modules():
+        for modname, ispkg in cinemapy_modules():
             if ispkg:
                 continue
 

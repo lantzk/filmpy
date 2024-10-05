@@ -1,21 +1,22 @@
-"""FFmpeg tools tests for moviepy."""
+"""FFmpeg tools tests for cinemapy."""
 
+import contextlib
 import os
 import shutil
 
 import pytest
 
-from moviepy.video.io.ffmpeg_tools import (
+from cinemapy.video.io.ffmpeg_tools import (
     ffmpeg_extract_subclip,
     ffmpeg_resize,
     ffmpeg_stabilize_video,
 )
-from moviepy.video.io.VideoFileClip import VideoFileClip
+from cinemapy.video.io.VideoFileClip import VideoFileClip
 
 
 def test_ffmpeg_extract_subclip(util):
     extract_subclip_tempdir = os.path.join(
-        util.TMP_DIR, "moviepy_ffmpeg_extract_subclip"
+        util.TMP_DIR, "cinemapy_ffmpeg_extract_subclip"
     )
     if os.path.isdir(extract_subclip_tempdir):
         shutil.rmtree(extract_subclip_tempdir)
@@ -41,14 +42,12 @@ def test_ffmpeg_extract_subclip(util):
     assert 0.18 <= clip.duration <= 0.22  # not accurate
 
     if os.path.isdir(extract_subclip_tempdir):
-        try:
+        with contextlib.suppress(PermissionError):
             shutil.rmtree(extract_subclip_tempdir)
-        except PermissionError:
-            pass
 
 
 def test_ffmpeg_resize(util):
-    outputfile = os.path.join(util.TMP_DIR, "moviepy_ffmpeg_resize.mp4")
+    outputfile = os.path.join(util.TMP_DIR, "cinemapy_ffmpeg_resize.mp4")
     if os.path.isfile(outputfile):
         os.remove(outputfile)
 
@@ -66,14 +65,12 @@ def test_ffmpeg_resize(util):
     assert clip.size[1] == expected_size[1]
 
     if os.path.isfile(outputfile):
-        try:
+        with contextlib.suppress(PermissionError):
             os.remove(outputfile)
-        except PermissionError:
-            pass
 
 
 def test_ffmpeg_stabilize_video(util):
-    stabilize_video_tempdir = os.path.join(util.TMP_DIR, "moviepy_ffmpeg_stabilize")
+    stabilize_video_tempdir = os.path.join(util.TMP_DIR, "cinemapy_ffmpeg_stabilize")
     if os.path.isdir(stabilize_video_tempdir):
         shutil.rmtree(stabilize_video_tempdir)
     os.mkdir(stabilize_video_tempdir)
@@ -109,10 +106,8 @@ def test_ffmpeg_stabilize_video(util):
         )
 
     if os.path.isdir(stabilize_video_tempdir):
-        try:
+        with contextlib.suppress(PermissionError):
             shutil.rmtree(stabilize_video_tempdir)
-        except PermissionError:
-            pass
 
 
 if __name__ == "__main__":

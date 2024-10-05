@@ -1,21 +1,21 @@
 """VideoClip tests."""
 
+import contextlib
 import copy
 import os
 
 import numpy as np
+import pytest
 from PIL import Image
 
-import pytest
-
-from moviepy.audio.AudioClip import AudioClip
-from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.tools import convert_to_seconds
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.fx.mask_color import mask_color
-from moviepy.video.fx.multiply_speed import multiply_speed
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
+from cinemapy.audio.AudioClip import AudioClip
+from cinemapy.audio.io.AudioFileClip import AudioFileClip
+from cinemapy.tools import convert_to_seconds
+from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from cinemapy.video.fx.mask_color import mask_color
+from cinemapy.video.fx.multiply_speed import multiply_speed
+from cinemapy.video.io.VideoFileClip import VideoFileClip
+from cinemapy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 
 def test_aspect_ratio():
@@ -59,7 +59,7 @@ def test_check_codec(util, video):
         clip.write_videofile(location)
     except ValueError as e:
         assert (
-            "MoviePy couldn't find the codec associated with the filename."
+            "cinemapy couldn't find the codec associated with the filename."
             " Provide the 'codec' parameter in write_videofile." in str(e)
         )
 
@@ -82,7 +82,7 @@ def test_write_frame_errors(util, video):
 
 def test_write_frame_errors_with_redirected_logs(util, video):
     """Checks error cases return helpful messages even when logs redirected.
-    See https://github.com/Zulko/moviepy/issues/877
+    See https://github.com/Zulko/cinemapy/issues/877
     """
     clip = video()
     location = os.path.join(util.TMP_DIR, "logged-write.mp4")
@@ -133,12 +133,10 @@ def test_write_videofiles_with_temp_audiofile_path(util):
     ),
 )
 def test_save_frame(util, with_mask, t, mask_color, frames):
-    filename = os.path.join(util.TMP_DIR, "moviepy_VideoClip_save_frame.png")
+    filename = os.path.join(util.TMP_DIR, "cinemapy_VideoClip_save_frame.png")
     if os.path.isfile(filename):
-        try:
+        with contextlib.suppress(PermissionError):
             os.remove(filename)
-        except PermissionError:
-            pass
 
     width, height = (len(frames[0][0]), len(frames[0]))
 
@@ -240,7 +238,10 @@ def test_write_gif_ImageMagick_tmpfiles_pixel_format(util, video):
 
 def test_subfx(util):
     clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 1)
-    transform = lambda c: multiply_speed(c, 0.5)
+
+    def transform(c):
+        return multiply_speed(c, 0.5)
+
     new_clip = clip.subfx(transform, 0.5, 0.8)
     location = os.path.join(util.TMP_DIR, "subfx.mp4")
     new_clip.write_videofile(location)
@@ -272,7 +273,10 @@ def test_oncolor(util):
 
 def test_setaudio(util):
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
+
+    def make_frame_440(t):
+        return [np.sin(440 * 2 * np.pi * t)]
+
     audio = AudioClip(make_frame_440, duration=0.5)
     audio.fps = 44100
     clip = clip.with_audio(audio)
@@ -400,12 +404,13 @@ def test_videoclip_copy(copy_func):
     for attr in clip.__dict__:
         # mask and audio are shallow copies that should be initialized
         if attr in ("mask", "audio"):
-            if attr == "mask":
-                nested_object = BitmapClip([["R"]], duration=0.01)
-            else:
-                nested_object = AudioClip(
+            nested_object = (
+                BitmapClip([["R"]], duration=0.01)
+                if attr == "mask"
+                else AudioClip(
                     lambda t: [np.sin(880 * 2 * np.pi * t)], duration=0.01, fps=44100
                 )
+            )
             setattr(clip, attr, nested_object)
         else:
             setattr(clip, attr, "foo")
