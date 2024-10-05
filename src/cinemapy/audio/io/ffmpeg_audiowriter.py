@@ -1,12 +1,12 @@
-"""cinemapy audio writing with ffmpeg."""
+"""filmpy audio writing with ffmpeg."""
 
 import subprocess as sp
 
 import proglog
 
-from cinemapy.config import FFMPEG_BINARY
-from cinemapy.decorators import requires_duration
-from cinemapy.tools import cross_platform_popen_params
+from filmpy.config import FFMPEG_BINARY
+from filmpy.decorators import requires_duration
+from filmpy.tools import cross_platform_popen_params
 
 
 class FFMPEG_AudioWriter:
@@ -105,7 +105,7 @@ class FFMPEG_AudioWriter:
                 ffmpeg_error = self.logfile.read()
 
             error = (
-                f"{err}\n\ncinemapy error: FFMPEG encountered the following error while "
+                f"{err}\n\nfilmpy error: FFMPEG encountered the following error while "
                 f"writing file {self.filename}:\n\n {ffmpeg_error}"
             )
 
@@ -187,7 +187,7 @@ def ffmpeg_audiowrite(
     """
     logfile = open(filename + ".log", "w+") if write_logfile else None
     logger = proglog.default_bar_logger(logger)
-    logger(message=f"cinemapy - Writing audio in {filename}")
+    logger(message=f"filmpy - Writing audio in {filename}")
     writer = FFMPEG_AudioWriter(
         filename,
         fps,
@@ -208,4 +208,4 @@ def ffmpeg_audiowrite(
 
     if write_logfile:
         logfile.close()
-    logger(message="cinemapy - Done.")
+    logger(message="filmpy - Done.")

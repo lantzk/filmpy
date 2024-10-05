@@ -2,9 +2,9 @@
 There are available as ``transfx.crossfadein`` etc.
 """
 
-from cinemapy.decorators import add_mask_if_none, requires_duration
-from cinemapy.video.fx.fadein import fadein
-from cinemapy.video.fx.fadeout import fadeout
+from filmpy.decorators import add_mask_if_none, requires_duration
+from filmpy.video.fx.fadein import fadein
+from filmpy.video.fx.fadeout import fadeout
 
 __all__ = ["crossfadein", "crossfadeout", "slide_in", "slide_out"]
 
@@ -42,7 +42,7 @@ def slide_in(clip, duration, side):
     Parameters
     ----------
 
-    clip : cinemapy.Clip.Clip
+    clip : filmpy.Clip.Clip
       A video clip.
 
     duration : float
@@ -55,7 +55,7 @@ def slide_in(clip, duration, side):
     Examples
     --------
 
-    >>> from cinemapy import *
+    >>> from filmpy import *
     >>>
     >>> clips = [... make a list of clips]
     >>> slided_clips = [
@@ -90,7 +90,7 @@ def slide_out(clip, duration, side):
     Parameters
     ----------
 
-    clip : cinemapy.Clip.Clip
+    clip : filmpy.Clip.Clip
       A video clip.
 
     duration : float

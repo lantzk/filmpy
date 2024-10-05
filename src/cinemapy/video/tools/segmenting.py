@@ -3,7 +3,7 @@
 import numpy as np
 import scipy.ndimage as ndi
 
-from cinemapy.video.VideoClip import ImageClip
+from filmpy.video.VideoClip import ImageClip
 
 
 def find_objects(clip, size_threshold=500, preview=False):
@@ -14,7 +14,7 @@ def find_objects(clip, size_threshold=500, preview=False):
     ----------
 
     clip : video.VideoClip.ImageClip
-      cinemapy video clip where the objects will be searched.
+      filmpy video clip where the objects will be searched.
 
     size_threshold : float, optional
       Minimum size of what is considered an object. All objects found with

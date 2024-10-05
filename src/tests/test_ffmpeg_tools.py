@@ -1,4 +1,4 @@
-"""FFmpeg tools tests for cinemapy."""
+"""FFmpeg tools tests for filmpy."""
 
 import contextlib
 import os
@@ -6,17 +6,17 @@ import shutil
 
 import pytest
 
-from cinemapy.video.io.ffmpeg_tools import (
+from filmpy.video.io.ffmpeg_tools import (
     ffmpeg_extract_subclip,
     ffmpeg_resize,
     ffmpeg_stabilize_video,
 )
-from cinemapy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.io.VideoFileClip import VideoFileClip
 
 
 def test_ffmpeg_extract_subclip(util):
     extract_subclip_tempdir = os.path.join(
-        util.TMP_DIR, "cinemapy_ffmpeg_extract_subclip"
+        util.TMP_DIR, "filmpy_ffmpeg_extract_subclip"
     )
     if os.path.isdir(extract_subclip_tempdir):
         shutil.rmtree(extract_subclip_tempdir)
@@ -47,7 +47,7 @@ def test_ffmpeg_extract_subclip(util):
 
 
 def test_ffmpeg_resize(util):
-    outputfile = os.path.join(util.TMP_DIR, "cinemapy_ffmpeg_resize.mp4")
+    outputfile = os.path.join(util.TMP_DIR, "filmpy_ffmpeg_resize.mp4")
     if os.path.isfile(outputfile):
         os.remove(outputfile)
 
@@ -70,7 +70,7 @@ def test_ffmpeg_resize(util):
 
 
 def test_ffmpeg_stabilize_video(util):
-    stabilize_video_tempdir = os.path.join(util.TMP_DIR, "cinemapy_ffmpeg_stabilize")
+    stabilize_video_tempdir = os.path.join(util.TMP_DIR, "filmpy_ffmpeg_stabilize")
     if os.path.isdir(stabilize_video_tempdir):
         shutil.rmtree(stabilize_video_tempdir)
     os.mkdir(stabilize_video_tempdir)

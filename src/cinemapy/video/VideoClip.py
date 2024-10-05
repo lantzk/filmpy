@@ -15,9 +15,9 @@ import proglog
 from imageio.v2 import imread, imsave
 from PIL import Image
 
-from cinemapy.Clip import Clip
-from cinemapy.config import IMAGEMAGICK_BINARY
-from cinemapy.decorators import (
+from filmpy.Clip import Clip
+from filmpy.config import IMAGEMAGICK_BINARY
+from filmpy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
@@ -28,19 +28,19 @@ from cinemapy.decorators import (
     requires_fps,
     use_clip_fps_by_default,
 )
-from cinemapy.tools import (
+from filmpy.tools import (
     cross_platform_popen_params,
     extensions_dict,
     find_extension,
     subprocess_call,
 )
-from cinemapy.video.io.ffmpeg_writer import ffmpeg_write_video
-from cinemapy.video.io.gif_writers import (
+from filmpy.video.io.ffmpeg_writer import ffmpeg_write_video
+from filmpy.video.io.gif_writers import (
     write_gif,
     write_gif_with_image_io,
     write_gif_with_tempfiles,
 )
-from cinemapy.video.tools.drawing import blit
+from filmpy.video.tools.drawing import blit
 
 
 class VideoClip(Clip):
@@ -317,7 +317,7 @@ class VideoClip(Clip):
         Examples
         --------
 
-        >>> from cinemapy import VideoFileClip
+        >>> from filmpy import VideoFileClip
         >>> clip = VideoFileClip("myvideo.mp4").subclip(100,120)
         >>> clip.write_videofile("my_new_video.mp4")
         >>> clip.close()
@@ -332,7 +332,7 @@ class VideoClip(Clip):
                 codec = extensions_dict[ext]["codec"][0]
             except KeyError:
                 raise ValueError(
-                    "cinemapy couldn't find the codec associated "
+                    "filmpy couldn't find the codec associated "
                     "with the filename. Provide the 'codec' "
                     "parameter in write_videofile."
                 )
@@ -361,7 +361,7 @@ class VideoClip(Clip):
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
-        logger(message=f"cinemapy - Building video {filename}.")
+        logger(message=f"filmpy - Building video {filename}.")
         if make_audio:
             self.audio.write_audiofile(
                 audiofile,
@@ -391,7 +391,7 @@ class VideoClip(Clip):
 
         if remove_temp and make_audio and os.path.exists(audiofile):
             os.remove(audiofile)
-        logger(message=f"cinemapy - video ready {filename}")
+        logger(message=f"filmpy - video ready {filename}")
 
     @requires_duration
     @use_clip_fps_by_default
@@ -437,7 +437,7 @@ class VideoClip(Clip):
         """
         logger = proglog.default_bar_logger(logger)
         # Fails on GitHub macos CI
-        # logger(message="cinemapy - Writing frames %s." % name_format)
+        # logger(message="filmpy - Writing frames %s." % name_format)
 
         timings = np.arange(0, self.duration, 1.0 / fps)
 
@@ -446,7 +446,7 @@ class VideoClip(Clip):
             name = name_format % i
             filenames.append(name)
             self.save_frame(name, t, with_mask=with_mask)
-        # logger(message="cinemapy - Done writing frames %s." % name_format)
+        # logger(message="filmpy - Done writing frames %s." % name_format)
 
         return filenames
 
@@ -596,7 +596,7 @@ class VideoClip(Clip):
         clips = [clip for clip in [left, center, right] if clip is not None]
 
         # beurk, have to find other solution
-        from cinemapy.video.compositing.concatenate import concatenate_videoclips
+        from filmpy.video.compositing.concatenate import concatenate_videoclips
 
         return concatenate_videoclips(clips).with_start(self.start)
 
@@ -742,7 +742,7 @@ class VideoClip(Clip):
           Parameter in 0..1 indicating the opacity of the colored
           background.
         """
-        from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
+        from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
         if size is None:
             size = self.size
@@ -908,7 +908,7 @@ class VideoClip(Clip):
 
     def __add__(self, other):
         if isinstance(other, VideoClip):
-            from cinemapy.video.compositing.concatenate import concatenate_videoclips
+            from filmpy.video.compositing.concatenate import concatenate_videoclips
 
             method = "chain" if self.size == other.size else "compose"
             return concatenate_videoclips([self, other], method=method)
@@ -920,7 +920,7 @@ class VideoClip(Clip):
         placed side by side horizontally.
         """
         if isinstance(other, VideoClip):
-            from cinemapy.video.compositing.CompositeVideoClip import clips_array
+            from filmpy.video.compositing.CompositeVideoClip import clips_array
 
             return clips_array([[self, other]])
         return super().__or__(other)
@@ -931,7 +931,7 @@ class VideoClip(Clip):
         placed on top of other.
         """
         if isinstance(other, VideoClip):
-            from cinemapy.video.compositing.CompositeVideoClip import clips_array
+            from filmpy.video.compositing.CompositeVideoClip import clips_array
 
             return clips_array([[self], [other]])
         return super().__or__(other)
@@ -939,7 +939,7 @@ class VideoClip(Clip):
     def __matmul__(self, n):
         if not isinstance(n, Real):
             return NotImplemented
-        from cinemapy.video.fx.rotate import rotate
+        from filmpy.video.fx.rotate import rotate
 
         return rotate(self, n)
 
@@ -1347,7 +1347,7 @@ class TextClip(ImageClip):
             subprocess_call(cmd, logger=None)
         except OSError as err:
             error = (
-                f"cinemapy Error: creation of {filename} failed because of the "
+                f"filmpy Error: creation of {filename} failed because of the "
                 f"following error:\n\n{err}.\n\n."
                 "This error can be due to the fact that ImageMagick "
                 "is not installed on your computer, or (for Windows "
@@ -1391,7 +1391,7 @@ class TextClip(ImageClip):
             # The first 5 lines are header information, not colors, so ignore
             return [line.split(" ")[0] for line in lines[5:]]
         else:
-            raise Exception("cinemapy Error: Argument must equal 'font' or 'color'")
+            raise Exception("filmpy Error: Argument must equal 'font' or 'color'")
 
     @staticmethod
     def search(string, arg):

@@ -4,9 +4,9 @@ import re
 
 import numpy as np
 
-from cinemapy.decorators import convert_path_to_string
-from cinemapy.tools import convert_to_seconds
-from cinemapy.video.VideoClip import TextClip, VideoClip
+from filmpy.decorators import convert_path_to_string
+from filmpy.tools import convert_to_seconds
+from filmpy.video.VideoClip import TextClip, VideoClip
 
 
 class SubtitlesClip(VideoClip):
@@ -30,8 +30,8 @@ class SubtitlesClip(VideoClip):
     Examples
     --------
 
-    >>> from cinemapy.video.tools.subtitles import SubtitlesClip
-    >>> from cinemapy.video.io.VideoFileClip import VideoFileClip
+    >>> from filmpy.video.tools.subtitles import SubtitlesClip
+    >>> from filmpy.video.io.VideoFileClip import VideoFileClip
     >>> generator = lambda text: TextClip(text, font='Georgia-Regular',
     ...                                   font_size=24, color='white')
     >>> sub = SubtitlesClip("subtitles.srt", generator)

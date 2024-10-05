@@ -1,5 +1,5 @@
-from cinemapy.audio.AudioClip import concatenate_audioclips
-from cinemapy.decorators import audio_video_fx
+from filmpy.audio.AudioClip import concatenate_audioclips
+from filmpy.decorators import audio_video_fx
 
 
 @audio_video_fx
@@ -12,7 +12,7 @@ def audio_loop(clip, n_loops=None, duration=None):
     Examples
     --------
 
-    >>> from cinemapy import *
+    >>> from filmpy import *
     >>> videoclip = VideoFileClip('myvideo.mp4')
     >>> music = AudioFileClip('music.ogg')
     >>> audio = afx.audio_loop( music, duration=videoclip.duration)

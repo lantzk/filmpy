@@ -16,7 +16,7 @@ import threading
 import numpy as np
 import pytest
 
-from cinemapy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.io.VideoFileClip import VideoFileClip
 
 TMP_DIR = tempfile.gettempdir()  # because tempfile.tempdir is sometimes None
 
@@ -65,15 +65,15 @@ def get_static_files_server(port=8000):
 
 
 @functools.lru_cache(maxsize=None)
-def get_cinemapy_modules():
-    """Get all cinemapy module names and if each one is a package."""
+def get_filmpy_modules():
+    """Get all filmpy module names and if each one is a package."""
     response = []
     with contextlib.redirect_stdout(io.StringIO()):
-        cinemapy_module = importlib.import_module("cinemapy")
+        filmpy_module = importlib.import_module("filmpy")
 
         modules = pkgutil.walk_packages(
-            path=cinemapy_module.__path__,
-            prefix=cinemapy_module.__name__ + ".",
+            path=filmpy_module.__path__,
+            prefix=filmpy_module.__name__ + ".",
         )
 
         for _importer, modname, ispkg in modules:
@@ -144,11 +144,11 @@ def get_functions_with_decorator_defined(code, decorator_name):
 
 @pytest.fixture
 def util():
-    class cinemapyTestUtils:
+    class filmpyTestUtils:
         FONT = FONT
         TMP_DIR = TMP_DIR
 
-    return cinemapyTestUtils
+    return filmpyTestUtils
 
 
 @pytest.fixture
@@ -172,8 +172,8 @@ def static_files_server():
 
 
 @pytest.fixture
-def cinemapy_modules():
-    return get_cinemapy_modules
+def filmpy_modules():
+    return get_filmpy_modules
 
 
 @pytest.fixture

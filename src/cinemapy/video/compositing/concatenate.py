@@ -4,9 +4,9 @@ from functools import reduce
 
 import numpy as np
 
-from cinemapy.audio.AudioClip import CompositeAudioClip
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from cinemapy.video.VideoClip import ColorClip, VideoClip
+from filmpy.audio.AudioClip import CompositeAudioClip
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from filmpy.video.VideoClip import ColorClip, VideoClip
 
 
 def concatenate_videoclips(
@@ -102,7 +102,7 @@ def concatenate_videoclips(
         )
     else:
         raise Exception(
-            "cinemapy Error: The 'method' argument of "
+            "filmpy Error: The 'method' argument of "
             "concatenate_videoclips must be 'chain' or 'compose'"
         )
 

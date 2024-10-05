@@ -1,10 +1,10 @@
-"""Third party programs configuration for cinemapy."""
+"""Third party programs configuration for filmpy."""
 
 import os
 import subprocess as sp
 from pathlib import Path
 
-from cinemapy.tools import cross_platform_popen_params
+from filmpy.tools import cross_platform_popen_params
 
 if os.name == "nt":
     import winreg as wr
@@ -103,16 +103,16 @@ else:
 
 
 def check():
-    """Check if cinemapy has found the binaries of FFmpeg and ImageMagick."""
+    """Check if filmpy has found the binaries of FFmpeg and ImageMagick."""
     if try_cmd([FFMPEG_BINARY])[0]:
-        print(f"cinemapy: ffmpeg successfully found in '{FFMPEG_BINARY}'.")
+        print(f"filmpy: ffmpeg successfully found in '{FFMPEG_BINARY}'.")
     else:  # pragma: no cover
-        print(f"cinemapy: can't find or access ffmpeg in '{FFMPEG_BINARY}'.")
+        print(f"filmpy: can't find or access ffmpeg in '{FFMPEG_BINARY}'.")
 
     if try_cmd([IMAGEMAGICK_BINARY])[0]:
-        print(f"cinemapy: ImageMagick successfully found in '{IMAGEMAGICK_BINARY}'.")
+        print(f"filmpy: ImageMagick successfully found in '{IMAGEMAGICK_BINARY}'.")
     else:  # pragma: no cover
-        print(f"cinemapy: can't find or access ImageMagick in '{IMAGEMAGICK_BINARY}'.")
+        print(f"filmpy: can't find or access ImageMagick in '{IMAGEMAGICK_BINARY}'.")
 
     if DOTENV:
         print(f"\n.env file content at {DOTENV}:\n")

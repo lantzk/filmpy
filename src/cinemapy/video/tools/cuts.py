@@ -1,10 +1,10 @@
-"""Contains everything that can help automate the cuts in cinemapy."""
+"""Contains everything that can help automate the cuts in filmpy."""
 
 from collections import defaultdict
 
 import numpy as np
 
-from cinemapy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
+from filmpy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
 
 
 @use_clip_fps_by_default
@@ -15,7 +15,7 @@ def find_video_period(clip, fps=None, start_time=0.3):
     Parameters
     ----------
 
-    clip : cinemapy.Clip.Clip
+    clip : filmpy.Clip.Clip
       Clip for which the video period will be computed.
 
     fps : int, optional
@@ -28,8 +28,8 @@ def find_video_period(clip, fps=None, start_time=0.3):
     Examples
     --------
 
-    >>> from cinemapy.editor import *
-    >>> from cinemapy.video.tools.cuts import find_video_period
+    >>> from filmpy.editor import *
+    >>> from filmpy.video.tools.cuts import find_video_period
     >>>
     >>> clip = VideoFileClip("media/chaplin.mp4").subclip(0, 1).loop(2)
     >>> round(videotools.find_video_period(clip, fps=80), 6)
@@ -196,8 +196,8 @@ class FramesMatches(list):
         Parameters
         ----------
 
-        clip : cinemapy.video.VideoClip.VideoClip
-          A cinemapy video clip.
+        clip : filmpy.video.VideoClip.VideoClip
+          A filmpy video clip.
 
         distance_threshold : float
           Distance above which a match is rejected.
@@ -224,8 +224,8 @@ class FramesMatches(list):
         We find all matching frames in a given video and turn the best match
         with a duration of 1.5 seconds or more into a GIF:
 
-        >>> from cinemapy import VideoFileClip
-        >>> from cinemapy.video.tools.cuts import FramesMatches
+        >>> from filmpy import VideoFileClip
+        >>> from filmpy.video.tools.cuts import FramesMatches
         >>>
         >>> clip = VideoFileClip("foo.mp4").resize(width=200)
         >>> matches = FramesMatches.from_clip(
@@ -334,8 +334,8 @@ class FramesMatches(list):
         --------
 
         >>> from pprint import pprint
-        >>> from cinemapy.editor import *
-        >>> from cinemapy.video.tools.cuts import FramesMatches
+        >>> from filmpy.editor import *
+        >>> from filmpy.video.tools.cuts import FramesMatches
         >>>
         >>> ch_clip = VideoFileClip("media/chaplin.mp4").subclip(1, 4)
         >>> clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])
@@ -421,8 +421,8 @@ class FramesMatches(list):
 
         >>> import os
         >>> from pprint import pprint
-        >>> from cinemapy.editor import *
-        >>> from cinemapy.video.tools.cuts import FramesMatches
+        >>> from filmpy.editor import *
+        >>> from filmpy.video.tools.cuts import FramesMatches
         >>>
         >>> ch_clip = VideoFileClip("media/chaplin.mp4").subclip(1, 4)
         >>> clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])
@@ -433,10 +433,10 @@ class FramesMatches(list):
         >>>
         >>> os.mkdir("foo")
         >>> result.write_gifs(clip, "foo")
-        cinemapy - Building file foo/00000100_00000400.gif with imageio.
-        cinemapy - Building file foo/00000115_00000384.gif with imageio.
-        cinemapy - Building file foo/00000128_00000372.gif with imageio.
-        cinemapy - Building file foo/00000140_00000360.gif with imageio.
+        filmpy - Building file foo/00000100_00000400.gif with imageio.
+        filmpy - Building file foo/00000115_00000384.gif with imageio.
+        filmpy - Building file foo/00000128_00000372.gif with imageio.
+        filmpy - Building file foo/00000140_00000360.gif with imageio.
         """
         for start, end, _, _ in self:
             name = "%s/%08d_%08d.gif" % (gifs_dir, 100 * start, 100 * end)

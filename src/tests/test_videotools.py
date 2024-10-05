@@ -9,33 +9,33 @@ import sys
 import numpy as np
 import pytest
 
-from cinemapy.audio.AudioClip import AudioClip, CompositeAudioClip
-from cinemapy.audio.fx.multiply_volume import multiply_volume
-from cinemapy.audio.tools.cuts import find_audio_period
-from cinemapy.video.compositing.concatenate import concatenate_videoclips
-from cinemapy.video.fx.loop import loop
-from cinemapy.video.fx.time_mirror import time_mirror
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.tools.credits import CreditsClip
-from cinemapy.video.tools.cuts import (
+from filmpy.audio.AudioClip import AudioClip, CompositeAudioClip
+from filmpy.audio.fx.multiply_volume import multiply_volume
+from filmpy.audio.tools.cuts import find_audio_period
+from filmpy.video.compositing.concatenate import concatenate_videoclips
+from filmpy.video.fx.loop import loop
+from filmpy.video.fx.time_mirror import time_mirror
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.tools.credits import CreditsClip
+from filmpy.video.tools.cuts import (
     FramesMatch,
     FramesMatches,
     detect_scenes,
     find_video_period,
 )
-from cinemapy.video.tools.drawing import circle, color_gradient, color_split
-from cinemapy.video.tools.interpolators import Interpolator, Trajectory
+from filmpy.video.tools.drawing import circle, color_gradient, color_split
+from filmpy.video.tools.interpolators import Interpolator, Trajectory
 
 try:
     import scipy
 except ImportError:
     scipy = None
 else:
-    from cinemapy.video.tools.segmenting import find_objects
+    from filmpy.video.tools.segmenting import find_objects
 
 import contextlib
 
-from cinemapy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
+from filmpy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 try:
     importlib.import_module("ipython.display")
@@ -232,7 +232,7 @@ def test_FramesMatches_save_load(util):
 1.000	2.000	0.800	0.800
 """
 
-    outputfile = os.path.join(util.TMP_DIR, "cinemapy_FramesMatches_save_load.txt")
+    outputfile = os.path.join(util.TMP_DIR, "filmpy_FramesMatches_save_load.txt")
 
     # save
     FramesMatches(input_matching_frames).save(outputfile)
@@ -340,7 +340,7 @@ def test_FramesMatches_write_gifs(util):
         nomatch_threshold=0,
     )
 
-    gifs_dir = os.path.join(util.TMP_DIR, "cinemapy_FramesMatches_write_gifs")
+    gifs_dir = os.path.join(util.TMP_DIR, "filmpy_FramesMatches_write_gifs")
     if os.path.isdir(gifs_dir):
         shutil.rmtree(gifs_dir)
     os.mkdir(gifs_dir)
@@ -906,7 +906,7 @@ def test_Trajectory_addy():
 
 
 def test_Trajectory_from_to_file(util):
-    filename = os.path.join(util.TMP_DIR, "cinemapy_Trajectory_from_to_file.txt")
+    filename = os.path.join(util.TMP_DIR, "filmpy_Trajectory_from_to_file.txt")
     if os.path.isfile(filename):
         with contextlib.suppress(PermissionError):
             os.remove(filename)
@@ -1049,7 +1049,7 @@ def test_find_objects(filename, expected_screenpos):
             id="filename(.jpg)",
         ),
         pytest.param(
-            os.path.join("{tempdir}", "cinemapy_ipython_display.foo"),
+            os.path.join("{tempdir}", "filmpy_ipython_display.foo"),
             None,  # unknown filetype
             None,
             None,
@@ -1058,7 +1058,7 @@ def test_find_objects(filename, expected_screenpos):
             id="filename(.foo)",
         ),
         pytest.param(
-            os.path.join("{tempdir}", "cinemapy_ipython_display.foo"),
+            os.path.join("{tempdir}", "filmpy_ipython_display.foo"),
             "video",  # unsupported filetype for '.foo' extension
             None,
             None,
@@ -1114,7 +1114,7 @@ def test_ipython_display(
     util, clip, filetype, fps, maxduration, t, expected_error, monkeypatch
 ):
     # patch module to use it without ipython installed
-    video_io_html_tools_module = importlib.import_module("cinemapy.video.io.html_tools")
+    video_io_html_tools_module = importlib.import_module("filmpy.video.io.html_tools")
     monkeypatch.setattr(video_io_html_tools_module, "ipython_available", True)
 
     # build `ipython_display` kwargs
@@ -1175,8 +1175,8 @@ def test_ipython_display(
     assert html_content.startswith(content_start)
     assert html_content.endswith(content_end)
 
-    # clean `ipython` and `cinemapy.video.io.html_tools` module from cache
-    del sys.modules["cinemapy.video.io.html_tools"]
+    # clean `ipython` and `filmpy.video.io.html_tools` module from cache
+    del sys.modules["filmpy.video.io.html_tools"]
     if "ipython" in sys.modules:
         del sys.modules["ipython"]
 
@@ -1186,13 +1186,13 @@ def test_ipython_display(
     reason="ipython must not be installed in order to run this test",
 )
 def test_ipython_display_not_available():
-    video_io_html_tools_module = importlib.import_module("cinemapy.video.io.html_tools")
+    video_io_html_tools_module = importlib.import_module("filmpy.video.io.html_tools")
 
     with pytest.raises(ImportError) as exc:
         video_io_html_tools_module.ipython_display("foo")
     assert str(exc.value) == "Only works inside an IPython Notebook"
 
-    del sys.modules["cinemapy.video.io.html_tools"]
+    del sys.modules["filmpy.video.io.html_tools"]
 
 
 @pytest.mark.parametrize("wave_type", ("mono", "stereo"))

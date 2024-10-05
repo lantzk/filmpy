@@ -1,4 +1,4 @@
-"""cinemapy video GIFs writing."""
+"""filmpy video GIFs writing."""
 
 import os
 import subprocess as sp
@@ -6,10 +6,10 @@ import subprocess as sp
 import numpy as np
 import proglog
 
-from cinemapy.config import FFMPEG_BINARY, IMAGEMAGICK_BINARY
-from cinemapy.decorators import requires_duration, use_clip_fps_by_default
-from cinemapy.tools import cross_platform_popen_params, subprocess_call
-from cinemapy.video.fx.loop import loop as loop_fx
+from filmpy.config import FFMPEG_BINARY, IMAGEMAGICK_BINARY
+from filmpy.decorators import requires_duration, use_clip_fps_by_default
+from filmpy.tools import cross_platform_popen_params, subprocess_call
+from filmpy.video.fx.loop import loop as loop_fx
 
 try:
     import imageio
@@ -45,7 +45,7 @@ def write_gif_with_tempfiles(
     Parameters
     ----------
 
-    clip : cinemapy.video.VideoClip.VideoClip
+    clip : filmpy.video.VideoClip.VideoClip
       The clip from which the frames will be extracted to create the GIF image.
 
     filename : str
@@ -96,8 +96,8 @@ def write_gif_with_tempfiles(
 
     tempfiles = []
 
-    logger(message=f"cinemapy - Building file {filename}\n")
-    logger(message="cinemapy - - Generating GIF frames")
+    logger(message=f"filmpy - Building file {filename}\n")
+    logger(message="filmpy - - Generating GIF frames")
 
     for i, t in logger.iter_bar(t=list(enumerate(tt))):
         name = "%s_GIFTEMP%04d.png" % (file_root, i + 1)
@@ -113,7 +113,7 @@ def write_gif_with_tempfiles(
         if not pixel_format:
             pixel_format = "RGBA" if with_mask else "RGB"
 
-        logger(message="cinemapy - - Optimizing GIF with ImageMagick...")
+        logger(message="filmpy - - Optimizing GIF with ImageMagick...")
         cmd = (
             [
                 IMAGEMAGICK_BINARY,
@@ -162,11 +162,11 @@ def write_gif_with_tempfiles(
 
     try:
         subprocess_call(cmd, logger=logger)
-        logger(message=f"cinemapy - GIF ready: {filename}.")
+        logger(message=f"filmpy - GIF ready: {filename}.")
 
     except OSError as err:
         error = (
-            f"cinemapy Error: creation of {filename} failed because "
+            f"filmpy Error: creation of {filename} failed because "
             f"of the following error:\n\n{str(err)}.\n\n."
         )
 
@@ -209,7 +209,7 @@ def write_gif(
     Parameters
     ----------
 
-    clip : cinemapy.video.VideoClip.VideoClip
+    clip : filmpy.video.VideoClip.VideoClip
       The clip from which the frames will be extracted to create the GIF image.
 
     filename : str
@@ -381,8 +381,8 @@ def write_gif(
             proc3 = sp.Popen(cmd3, **popen_params)
 
     # We send all the frames to the first process
-    logger(message=f"cinemapy - Building file  {filename}")
-    logger(message="cinemapy - - Generating GIF frames.")
+    logger(message=f"filmpy - Building file  {filename}")
+    logger(message="filmpy - - Generating GIF frames.")
     try:
         for t, frame in clip.iter_frames(
             fps=fps, logger=logger, with_times=True, dtype="uint8"
@@ -394,7 +394,7 @@ def write_gif(
 
     except OSError as err:
         error = (
-            f"[cinemapy] Error: creation of {filename} failed because "
+            f"[filmpy] Error: creation of {filename} failed because "
             f"of the following error:\n\n{str(err)}.\n\n."
         )
 
@@ -408,14 +408,14 @@ def write_gif(
 
         raise OSError(error)
     if program == "ImageMagick":
-        logger(message="cinemapy - - Optimizing GIF with ImageMagick.")
+        logger(message="filmpy - - Optimizing GIF with ImageMagick.")
     proc1.stdin.close()
     proc1.wait()
     if program == "ImageMagick":
         proc2.wait()
         if opt:
             proc3.wait()
-    logger(message=f"cinemapy - - File ready: {filename}.")
+    logger(message=f"filmpy - - File ready: {filename}.")
 
 
 def write_gif_with_image_io(
@@ -440,7 +440,7 @@ def write_gif_with_image_io(
     writer = imageio.save(
         filename, duration=1.0 / fps, quantizer=quantizer, palettesize=colors, loop=loop
     )
-    logger(message=f"cinemapy - Building file {filename} with imageio.")
+    logger(message=f"filmpy - Building file {filename} with imageio.")
 
     for frame in clip.iter_frames(fps=fps, logger=logger, dtype="uint8"):
         writer.append_data(frame)

@@ -7,7 +7,7 @@ import os
 import numpy as np
 from imageio.v2 import imread
 
-from cinemapy.video.VideoClip import VideoClip
+from filmpy.video.VideoClip import VideoClip
 
 
 class ImageSequenceClip(VideoClip):
@@ -89,7 +89,7 @@ class ImageSequenceClip(VideoClip):
                 image1 = imread(image)
             if size != image1.shape:
                 raise Exception(
-                    "cinemapy: ImageSequenceClip requires all images to be the same size"
+                    "filmpy: ImageSequenceClip requires all images to be the same size"
                 )
 
         self.fps = fps

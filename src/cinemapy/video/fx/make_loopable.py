@@ -1,6 +1,6 @@
-import cinemapy.video.compositing.transitions as transfx
-from cinemapy.decorators import requires_duration
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
+import filmpy.video.compositing.transitions as transfx
+from filmpy.decorators import requires_duration
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 
 @requires_duration

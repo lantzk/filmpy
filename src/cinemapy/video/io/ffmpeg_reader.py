@@ -7,8 +7,8 @@ import warnings
 
 import numpy as np
 
-from cinemapy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
-from cinemapy.tools import convert_to_seconds, cross_platform_popen_params
+from filmpy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
+from filmpy.tools import convert_to_seconds, cross_platform_popen_params
 
 
 class FFMPEG_VideoReader:
@@ -65,7 +65,7 @@ class FFMPEG_VideoReader:
         self.pixel_format = pixel_format
         self.depth = 4 if pixel_format[-1] == "a" else 3
         # 'a' represents 'alpha' which means that each pixel has 4 values instead of 3.
-        # See https://github.com/Zulko/cinemapy/issues/1070#issuecomment-644457274
+        # See https://github.com/Zulko/filmpy/issues/1070#issuecomment-644457274
 
         if bufsize is None:
             w, h = self.size
@@ -180,7 +180,7 @@ class FFMPEG_VideoReader:
                 )
                 if not hasattr(self, "last_read"):
                     raise OSError(
-                        "cinemapy error: failed to read the first frame of "
+                        "filmpy error: failed to read the first frame of "
                         f"video file {self.filename}. That might mean that the file is "
                         "corrupted. That may also mean that you are using "
                         "a deprecated version of FFMPEG. On Ubuntu/Debian "
@@ -256,7 +256,7 @@ def ffmpeg_read_image(filename, with_mask=True, pixel_format=None):
     Wraps FFMPEG_Videoreader to read just one image.
     Returns an ImageClip.
 
-    This function is not meant to be used directly in cinemapy.
+    This function is not meant to be used directly in filmpy.
     Use ImageClip instead to make clips out of image files.
 
     Parameters
@@ -367,7 +367,7 @@ class FFmpegInfosParser:
     def parse(self):
         """Parses the information returned by FFmpeg in stderr executing their binary
         for a file with ``-i`` option and returns a dictionary with all data needed
-        by cinemapy.
+        by filmpy.
         """
         # chapters by input file
         input_chapters = []
@@ -604,7 +604,7 @@ class FFmpegInfosParser:
             }[stream_type](line)
         except KeyError:
             raise NotImplementedError(
-                f"{stream_type} stream parsing is not supported by cinemapy and"
+                f"{stream_type} stream parsing is not supported by filmpy and"
                 " will be ignored"
             )
 
@@ -637,7 +637,7 @@ class FFmpegInfosParser:
                 stream_data["size"] = [int(num) for num in match_video_size.groups()]
         except Exception:
             raise OSError(
-                "cinemapy error: failed to read video dimensions in"
+                "filmpy error: failed to read video dimensions in"
                 f" file '{self.filename}'.\nHere are the file infos returned by"
                 f"ffmpeg:\n\n{self.infos}"
             )
@@ -710,7 +710,7 @@ class FFmpegInfosParser:
             return convert_to_seconds(match_duration.group(1))
         except Exception:
             raise OSError(
-                f"cinemapy error: failed to read the duration of file '{self.filename}'.\n"
+                f"filmpy error: failed to read the duration of file '{self.filename}'.\n"
                 f"Here are the file infos returned by ffmpeg:\n\n{self.infos}"
             )
 
@@ -778,7 +778,7 @@ def ffmpeg_parse_infos(
     decode_file
       Indicates if the whole file must be read to retrieve their duration.
       This is needed for some files in order to get the correct duration (see
-      https://github.com/Zulko/cinemapy/pull/1222).
+      https://github.com/Zulko/filmpy/pull/1222).
     """
     # Open the file in a pipe, read output
     cmd = [FFMPEG_BINARY, "-hide_banner", "-i", filename]

@@ -12,10 +12,10 @@ import inspect
 import os
 from base64 import b64encode
 
-from cinemapy.audio.AudioClip import AudioClip
-from cinemapy.tools import extensions_dict
-from cinemapy.video.io.ffmpeg_reader import ffmpeg_parse_infos
-from cinemapy.video.VideoClip import ImageClip, VideoClip
+from filmpy.audio.AudioClip import AudioClip
+from filmpy.tools import extensions_dict
+from filmpy.video.io.ffmpeg_reader import ffmpeg_parse_infos
+from filmpy.video.VideoClip import ImageClip, VideoClip
 
 try:  # pragma: no cover
     from IPython.display import HTML
@@ -58,7 +58,7 @@ def html_embed(
     Parameters
     ----------
 
-    clip : cinemapy.Clip.Clip
+    clip : filmpy.Clip.Clip
       Either a file name, or a clip to preview.
       Either an image, a sound or a video. Clips will actually be
       written to a file and embedded as if a filename was provided.
@@ -88,7 +88,7 @@ def html_embed(
     Examples
     --------
 
-    >>> from cinemapy.editor import *
+    >>> from filmpy.editor import *
     >>> # later ...
     >>> html_embed(clip, width=360)
     >>> html_embed(clip.audio)
@@ -206,7 +206,7 @@ def ipython_display(
     Parameters
     ----------
 
-    clip : cinemapy.Clip.Clip
+    clip : filmpy.Clip.Clip
       Either the name of a file, or a clip to preview. The clip will actually
       be written to a file and embedded as if a filename was provided.
 
@@ -242,7 +242,7 @@ def ipython_display(
     Examples
     --------
 
-    >>> from cinemapy.editor import *
+    >>> from filmpy.editor import *
     >>> # later ...
     >>> clip.ipython_display(width=360)
     >>> clip.audio.ipython_display()

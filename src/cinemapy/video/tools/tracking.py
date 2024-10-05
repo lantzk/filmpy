@@ -9,9 +9,9 @@ interval).
 
 import numpy as np
 
-from cinemapy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
-from cinemapy.video.io.preview import imdisplay
-from cinemapy.video.tools.interpolators import Trajectory
+from filmpy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
+from filmpy.video.io.preview import imdisplay
+from filmpy.video.tools.interpolators import Trajectory
 
 try:
     import cv2
@@ -42,7 +42,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     ----------
 
     clip : video.VideoClip.VideoClip
-      cinemapy video clip to track.
+      filmpy video clip to track.
 
     t1 : float or str or tuple, optional
       Start time to to track (defaults is start of the clip). Can be expressed
@@ -69,8 +69,8 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     Examples
     --------
 
-    >>> from cinemapy import VideoFileClip
-    >>> from cinemapy.video.tools.tracking import manual_tracking
+    >>> from filmpy import VideoFileClip
+    >>> from filmpy.video.tools.tracking import manual_tracking
     >>>
     >>> clip = VideoFileClip("media/chaplin.mp4")
     >>>
@@ -80,7 +80,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     >>>
     >>> # ...
     >>> # later, in another script, recover these trajectories
-    >>> from cinemapy.video.tools.tracking import Trajectory
+    >>> from filmpy.video.tools.tracking import Trajectory
     >>>
     >>> traj1, traj2, traj3 = Trajectory.load_list('track.text')
     >>>
@@ -189,7 +189,7 @@ def autoTrack(clip, pattern, tt=None, fps=None, radius=20, xy0=None):
     ----------
 
     clip : video.VideoClip.VideoClip
-      cinemapy video clip to track.
+      filmpy video clip to track.
 
     pattern : numpy.ndarray
       Image to search inside the clip frames.

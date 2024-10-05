@@ -4,13 +4,13 @@ import os
 
 import pytest
 
-from cinemapy.audio.io.AudioFileClip import AudioFileClip
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from cinemapy.video.compositing.concatenate import concatenate_videoclips
-from cinemapy.video.compositing.transitions import crossfadein, crossfadeout
-from cinemapy.video.fx.resize import resize
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.VideoClip import ColorClip, ImageClip, VideoClip
+from filmpy.audio.io.AudioFileClip import AudioFileClip
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from filmpy.video.compositing.concatenate import concatenate_videoclips
+from filmpy.video.compositing.transitions import crossfadein, crossfadeout
+from filmpy.video.fx.resize import resize
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.VideoClip import ColorClip, ImageClip, VideoClip
 
 try:
     import matplotlib.pyplot
@@ -272,7 +272,7 @@ def test_issue_368(util):
     from sklearn import svm
     from sklearn.datasets import make_moons
 
-    from cinemapy.video.io.bindings import mplfig_to_npimage
+    from filmpy.video.io.bindings import mplfig_to_npimage
 
     plt.switch_backend("Agg")
 
@@ -354,7 +354,7 @@ def test_issue_417():
 
 
 def test_issue_470(util):
-    wav_filename = os.path.join(util.TMP_DIR, "cinemapy_issue_470.wav")
+    wav_filename = os.path.join(util.TMP_DIR, "filmpy_issue_470.wav")
 
     audio_clip = AudioFileClip("media/crunching.mp3")
 

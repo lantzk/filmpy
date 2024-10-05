@@ -1,4 +1,4 @@
-"""Video preview functions for cinemapy editor."""
+"""Video preview functions for filmpy editor."""
 
 import threading
 import time
@@ -6,15 +6,15 @@ import time
 import numpy as np
 import pygame as pg
 
-from cinemapy.decorators import (
+from filmpy.decorators import (
     convert_masks_to_RGB,
     convert_parameter_to_seconds,
     requires_duration,
 )
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 pg.init()
-pg.display.set_caption("cinemapy")
+pg.display.set_caption("filmpy")
 
 
 def imdisplay(imarray, screen=None):
@@ -49,7 +49,7 @@ def show(clip, t=0, with_mask=True, interactive=False):
     Examples
     --------
 
-    >>> from cinemapy.editor import *
+    >>> from filmpy.editor import *
     >>>
     >>> clip = VideoFileClip("media/chaplin.mp4")
     >>> clip.show(t=4, interactive=True)
@@ -118,7 +118,7 @@ def preview(
     Examples
     --------
 
-    >>> from cinemapy.editor import *
+    >>> from filmpy.editor import *
     >>>
     >>> clip = VideoFileClip("media/chaplin.mp4")
     >>> clip.preview(fps=10, audio=False)

@@ -1,5 +1,5 @@
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from cinemapy.video.fx.crop import crop
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from filmpy.video.fx.crop import crop
 
 
 def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):

@@ -5,8 +5,8 @@ import copy
 import numpy as np
 import pytest
 
-from cinemapy.Clip import Clip
-from cinemapy.video.VideoClip import BitmapClip, ColorClip
+from filmpy.Clip import Clip
+from filmpy.video.VideoClip import BitmapClip, ColorClip
 
 
 def test_clip_equality():

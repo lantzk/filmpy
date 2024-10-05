@@ -1,4 +1,4 @@
-"""FFmpeg writer tests of cinemapy."""
+"""FFmpeg writer tests of filmpy."""
 
 import contextlib
 import multiprocessing
@@ -7,12 +7,12 @@ import os
 import pytest
 from PIL import Image
 
-from cinemapy.video.compositing.concatenate import concatenate_videoclips
-from cinemapy.video.io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
-from cinemapy.video.io.gif_writers import write_gif
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.tools.drawing import color_gradient
-from cinemapy.video.VideoClip import BitmapClip, ColorClip
+from filmpy.video.compositing.concatenate import concatenate_videoclips
+from filmpy.video.io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
+from filmpy.video.io.gif_writers import write_gif
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.tools.drawing import color_gradient
+from filmpy.video.VideoClip import BitmapClip, ColorClip
 
 
 @pytest.mark.parametrize(
@@ -55,7 +55,7 @@ def test_ffmpeg_write_video(
     bitrate,
     threads,
 ):
-    filename = os.path.join(util.TMP_DIR, f"cinemapy_ffmpeg_write_video{ext}")
+    filename = os.path.join(util.TMP_DIR, f"filmpy_ffmpeg_write_video{ext}")
     if os.path.isfile(filename):
         with contextlib.suppress(PermissionError):
             os.remove(filename)
@@ -128,13 +128,13 @@ def test_ffmpeg_write_video(
             (2, 1),
             False,
             "invalid",
-            (OSError, "cinemapy error: FFMPEG encountered the following error"),
+            (OSError, "filmpy error: FFMPEG encountered the following error"),
             id="pixel_format=invalid-OSError",
         ),
     ),
 )
 def test_ffmpeg_write_image(util, size, logfile, pixel_format, expected_result):
-    filename = os.path.join(util.TMP_DIR, "cinemapy_ffmpeg_write_image.png")
+    filename = os.path.join(util.TMP_DIR, "filmpy_ffmpeg_write_image.png")
     if os.path.isfile(filename):
         with contextlib.suppress(PermissionError):
             os.remove(filename)
@@ -189,7 +189,7 @@ def test_ffmpeg_write_image(util, size, logfile, pixel_format, expected_result):
 )
 @pytest.mark.parametrize("pixel_format", ("invalid", None))
 def test_write_gif(util, clip_class, opt, loop, with_mask, pixel_format):
-    filename = os.path.join(util.TMP_DIR, "cinemapy_write_gif.gif")
+    filename = os.path.join(util.TMP_DIR, "filmpy_write_gif.gif")
     if os.path.isfile(filename):
         with contextlib.suppress(PermissionError):
             os.remove(filename)

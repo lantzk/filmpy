@@ -5,13 +5,13 @@ import os
 import numpy as np
 import pytest
 
-from cinemapy.audio.AudioClip import (
+from filmpy.audio.AudioClip import (
     AudioArrayClip,
     AudioClip,
     CompositeAudioClip,
     concatenate_audioclips,
 )
-from cinemapy.audio.io.AudioFileClip import AudioFileClip
+from filmpy.audio.io.AudioFileClip import AudioFileClip
 
 
 def test_audioclip(util, mono_wave):

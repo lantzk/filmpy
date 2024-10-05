@@ -5,8 +5,8 @@ import os
 import numpy as np
 import pytest
 
-from cinemapy.video.fx.blink import blink
-from cinemapy.video.VideoClip import TextClip
+from filmpy.video.fx.blink import blink
+from filmpy.video.VideoClip import TextClip
 
 
 def test_list():

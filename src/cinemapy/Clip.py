@@ -1,4 +1,4 @@
-"""Implements the central object of cinemapy, the Clip, and all the methods that
+"""Implements the central object of filmpy, the Clip, and all the methods that
 are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
 
@@ -10,7 +10,7 @@ from operator import add
 import numpy as np
 import proglog
 
-from cinemapy.decorators import (
+from filmpy.decorators import (
     apply_to_audio,
     apply_to_mask,
     convert_parameter_to_seconds,
@@ -194,7 +194,7 @@ class Clip:
         The motivation of fx is to keep the name of the effect near its
         parameters when the effects are chained:
 
-        >>> from cinemapy.video.fx import multiply_volume, resize, mirrorx
+        >>> from filmpy.video.fx import multiply_volume, resize, mirrorx
         >>> clip.fx(multiply_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
         >>> # Is equivalent, but clearer than
         >>> mirrorx(resize(multiply_volume(clip, 0.5), 0.3))
@@ -319,7 +319,7 @@ class Clip:
           fps is halved in this mode, the duration will be doubled.
         """
         if change_duration:
-            from cinemapy.video.fx.multiply_speed import multiply_speed
+            from filmpy.video.fx.multiply_speed import multiply_speed
 
             newclip = multiply_speed(self, fps / self.fps)
         else:
@@ -515,7 +515,7 @@ class Clip:
 
         >>> # prints the maximum of red that is contained
         >>> # on the first line of each frame of the clip.
-        >>> from cinemapy import VideoFileClip
+        >>> from filmpy import VideoFileClip
         >>> myclip = VideoFileClip('myvideo.mp4')
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])
@@ -634,7 +634,7 @@ class Clip:
     def __del__(self):
         # WARNING: as stated in close() above, if we call close, it closes clips
         # even if shallow copies are still in used, leading to some bugs, see:
-        # https://github.com/Zulko/cinemapy/issues/1994
+        # https://github.com/Zulko/filmpy/issues/1994
         # so don't call self.close() here, rather do it manually in the code.
         pass
 
@@ -647,6 +647,6 @@ class Clip:
         if not isinstance(n, Real):
             return NotImplemented
 
-        from cinemapy.video.fx.loop import loop
+        from filmpy.video.fx.loop import loop
 
         return loop(self, n)

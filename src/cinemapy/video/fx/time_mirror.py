@@ -1,4 +1,4 @@
-from cinemapy.decorators import apply_to_audio, apply_to_mask, requires_duration
+from filmpy.decorators import apply_to_audio, apply_to_mask, requires_duration
 
 
 @requires_duration
