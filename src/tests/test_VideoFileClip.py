@@ -5,9 +5,9 @@ import os
 
 import pytest
 
-from cinemapy.video.compositing.CompositeVideoClip import clips_array
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.VideoClip import ColorClip
+from filmpy.video.compositing.CompositeVideoClip import clips_array
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.VideoClip import ColorClip
 
 
 def test_setup(util):

@@ -1,8 +1,8 @@
 """
-Module meant to make it easy to load the features of cinemapy that you will use
+Module meant to make it easy to load the features of filmpy that you will use
 for live editing by simply typing:
 
->>> from cinemapy.editor import *
+>>> from filmpy.editor import *
 
 - Starts a pygame session to enable ``clip.show()`` and ``clip.preview()``
   if pygame is installed
@@ -12,12 +12,12 @@ for live editing by simply typing:
 
 import os
 
-import cinemapy  # So that we can access cinemapy.__all__ later
-from cinemapy import *
-from cinemapy.video.io.html_tools import ipython_display
+import filmpy  # So that we can access filmpy.__all__ later
+from filmpy import *
+from filmpy.video.io.html_tools import ipython_display
 
 try:
-    from cinemapy.video.io.sliders import sliders
+    from filmpy.video.io.sliders import sliders
 except ImportError:
 
     def sliders(*args, **kwargs):
@@ -39,7 +39,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Add methods preview and show (only if pygame installed)
 try:
-    from cinemapy.video.io.preview import preview, show
+    from filmpy.video.io.preview import preview, show
 except ImportError:
 
     def preview(self, *args, **kwargs):
@@ -55,7 +55,7 @@ VideoClip.preview = preview
 VideoClip.show = show
 
 try:
-    from cinemapy.audio.io.preview import preview
+    from filmpy.audio.io.preview import preview
 except ImportError:
 
     def preview(self, *args, **kwargs):
@@ -65,6 +65,6 @@ except ImportError:
 
 AudioClip.preview = preview
 
-__all__ = cinemapy.__all__ + ["ipython_display", "sliders"]
+__all__ = filmpy.__all__ + ["ipython_display", "sliders"]
 
 del preview, show

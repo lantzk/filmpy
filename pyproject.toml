@@ -1,7 +1,7 @@
 [project]
-name = "cinemapy"
+name = "filmpy"
 version = "0.1.0"
-description = "cinemapy is a Python library for video processing and manipulation based on MoviePy"
+description = "filmpy is a Python library for video processing and manipulation based on MoviePy"
 authors = [
     { name = "lantzk", email = "9219265+lantzk@users.noreply.github.com" }
 ]
@@ -41,4 +41,4 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/cinemapy"]
+packages = ["src/filmpy"]

@@ -1,14 +1,14 @@
-"""Audio preview functions for cinemapy editor."""
+"""Audio preview functions for filmpy editor."""
 
 import time
 
 import numpy as np
 import pygame as pg
 
-from cinemapy.decorators import requires_duration
+from filmpy.decorators import requires_duration
 
 pg.init()
-pg.display.set_caption("cinemapy")
+pg.display.set_caption("filmpy")
 
 
 @requires_duration

@@ -1,4 +1,4 @@
-from cinemapy.decorators import apply_to_mask
+from filmpy.decorators import apply_to_mask
 
 
 @apply_to_mask

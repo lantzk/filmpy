@@ -2,9 +2,9 @@
 
 import os
 
-from cinemapy.config import FFMPEG_BINARY
-from cinemapy.decorators import convert_parameter_to_seconds, convert_path_to_string
-from cinemapy.tools import subprocess_call
+from filmpy.config import FFMPEG_BINARY
+from filmpy.decorators import convert_parameter_to_seconds, convert_path_to_string
+from filmpy.tools import subprocess_call
 
 
 @convert_path_to_string(("inputfile", "outputfile"))

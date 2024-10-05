@@ -7,16 +7,16 @@ import time
 import numpy as np
 import pytest
 
-from cinemapy.audio.AudioClip import AudioClip
-from cinemapy.config import FFMPEG_BINARY
-from cinemapy.video.compositing.CompositeVideoClip import clips_array
-from cinemapy.video.io.ffmpeg_reader import (
+from filmpy.audio.AudioClip import AudioClip
+from filmpy.config import FFMPEG_BINARY
+from filmpy.video.compositing.CompositeVideoClip import clips_array
+from filmpy.video.io.ffmpeg_reader import (
     FFMPEG_VideoReader,
     FFmpegInfosParser,
     ffmpeg_parse_infos,
 )
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.VideoClip import BitmapClip, ColorClip
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.VideoClip import BitmapClip, ColorClip
 
 
 def test_ffmpeg_parse_infos():
@@ -290,7 +290,7 @@ def test_ffmpeg_parse_video_rotation():
 
 
 def test_correct_video_rotation(util):
-    """See https://github.com/Zulko/cinemapy/pull/577"""
+    """See https://github.com/Zulko/filmpy/pull/577"""
     clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
 
     corrected_rotation_filename = os.path.join(

@@ -1,5 +1,5 @@
-from cinemapy.audio.fx.multiply_volume import multiply_volume
-from cinemapy.decorators import audio_video_fx
+from filmpy.audio.fx.multiply_volume import multiply_volume
+from filmpy.decorators import audio_video_fx
 
 
 @audio_video_fx
@@ -12,7 +12,7 @@ def audio_normalize(clip):
     Examples
     --------
 
-    >>> from cinemapy import *
+    >>> from filmpy import *
     >>> videoclip = VideoFileClip('myvideo.mp4').fx(afx.audio_normalize)
 
     """

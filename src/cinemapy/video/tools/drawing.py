@@ -304,7 +304,7 @@ def circle(screensize, center, radius, color=1.0, bg_color=0, blur=1):
     Examples
     --------
 
-    >>> from cinemapy.video.tools.drawing import circle
+    >>> from filmpy.video.tools.drawing import circle
     >>>
     >>> circle(
     ...     (5, 5),  # size

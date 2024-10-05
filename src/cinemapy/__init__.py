@@ -1,5 +1,5 @@
-"""Imports everything that you need from the cinemapy submodules so that every thing
-can be directly imported like `from cinemapy import VideoFileClip`.
+"""Imports everything that you need from the filmpy submodules so that every thing
+can be directly imported like `from filmpy import VideoFileClip`.
 
 In particular it loads all effects from the video.fx and audio.fx folders
 and turns them into VideoClip and AudioClip methods, so that instead of
@@ -9,28 +9,28 @@ you can write ``clip.resize(2)``.
 
 import inspect
 
-from cinemapy.audio import fx as afx
-from cinemapy.audio.AudioClip import (
+from filmpy.audio import fx as afx
+from filmpy.audio.AudioClip import (
     AudioClip,
     CompositeAudioClip,
     concatenate_audioclips,
 )
-from cinemapy.audio.io.AudioFileClip import AudioFileClip
-from cinemapy.tools import convert_to_seconds
-from cinemapy.version import __version__
-from cinemapy.video import fx as vfx
-from cinemapy.video import tools as videotools
-from cinemapy.video.compositing import transitions as transfx
-from cinemapy.video.compositing.CompositeVideoClip import (
+from filmpy.audio.io.AudioFileClip import AudioFileClip
+from filmpy.tools import convert_to_seconds
+from filmpy.version import __version__
+from filmpy.video import fx as vfx
+from filmpy.video import tools as videotools
+from filmpy.video.compositing import transitions as transfx
+from filmpy.video.compositing.CompositeVideoClip import (
     CompositeVideoClip,
     clips_array,
 )
-from cinemapy.video.compositing.concatenate import concatenate_videoclips
-from cinemapy.video.io import ffmpeg_tools
-from cinemapy.video.io.downloader import download_webfile
-from cinemapy.video.io.ImageSequenceClip import ImageSequenceClip
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.VideoClip import (
+from filmpy.video.compositing.concatenate import concatenate_videoclips
+from filmpy.video.io import ffmpeg_tools
+from filmpy.video.io.downloader import download_webfile
+from filmpy.video.io.ImageSequenceClip import ImageSequenceClip
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.VideoClip import (
     BitmapClip,
     ColorClip,
     ImageClip,
@@ -56,13 +56,13 @@ for name, function in audio_fxs:
 
 
 def preview(self, *args, **kwargs):
-    """NOT AVAILABLE: clip.preview requires importing from cinemapy.editor"""
-    raise ImportError("clip.preview requires importing from cinemapy.editor")
+    """NOT AVAILABLE: clip.preview requires importing from filmpy.editor"""
+    raise ImportError("clip.preview requires importing from filmpy.editor")
 
 
 def show(self, *args, **kwargs):
-    """NOT AVAILABLE: clip.show requires importing from cinemapy.editor"""
-    raise ImportError("clip.show requires importing from cinemapy.editor")
+    """NOT AVAILABLE: clip.show requires importing from filmpy.editor"""
+    raise ImportError("clip.show requires importing from filmpy.editor")
 
 
 VideoClip.preview = preview
@@ -73,7 +73,7 @@ AudioClip.preview = preview
 del audio_fxs, video_fxs, name, function, preview, show
 del inspect
 
-# Importing with `from cinemapy import *` will only import these names
+# Importing with `from filmpy import *` will only import these names
 __all__ = [
     "__version__",
     "VideoClip",

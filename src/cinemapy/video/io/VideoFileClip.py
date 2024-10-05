@@ -1,9 +1,9 @@
 """Implements VideoFileClip, a class for video clips creation using video files."""
 
-from cinemapy.audio.io.AudioFileClip import AudioFileClip
-from cinemapy.decorators import convert_path_to_string
-from cinemapy.video.io.ffmpeg_reader import FFMPEG_VideoReader
-from cinemapy.video.VideoClip import VideoClip
+from filmpy.audio.io.AudioFileClip import AudioFileClip
+from filmpy.decorators import convert_path_to_string
+from filmpy.video.io.ffmpeg_reader import FFMPEG_VideoReader
+from filmpy.video.VideoClip import VideoClip
 
 
 class VideoFileClip(VideoClip):
@@ -27,7 +27,7 @@ class VideoFileClip(VideoClip):
     has_mask:
       Set this to 'True' if there is a mask included in the videofile.
       Video files rarely contain masks, but some video codecs enable
-      that. For instance if you have a cinemapy VideoClip with a mask you
+      that. For instance if you have a filmpy VideoClip with a mask you
       can save it to a videofile with a mask. (see also
       ``VideoClip.write_videofile`` for more details).
 

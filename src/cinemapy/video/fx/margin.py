@@ -1,7 +1,7 @@
 import numpy as np
 
-from cinemapy.decorators import apply_to_mask
-from cinemapy.video.VideoClip import ImageClip
+from filmpy.decorators import apply_to_mask
+from filmpy.video.VideoClip import ImageClip
 
 
 @apply_to_mask

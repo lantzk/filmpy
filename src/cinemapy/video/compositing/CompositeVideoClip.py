@@ -1,10 +1,10 @@
-"""Main video composition interface of cinemapy."""
+"""Main video composition interface of filmpy."""
 
 import numpy as np
 from PIL import Image
 
-from cinemapy.audio.AudioClip import CompositeAudioClip
-from cinemapy.video.VideoClip import ColorClip, VideoClip
+from filmpy.audio.AudioClip import CompositeAudioClip
+from filmpy.video.VideoClip import ColorClip, VideoClip
 
 
 class CompositeVideoClip(VideoClip):

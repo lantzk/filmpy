@@ -1,6 +1,6 @@
 import numpy as np
 
-from cinemapy.decorators import audio_video_fx, convert_parameter_to_seconds
+from filmpy.decorators import audio_video_fx, convert_parameter_to_seconds
 
 
 def _mono_factor_getter():

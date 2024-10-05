@@ -2,10 +2,10 @@
 difficult to fill everyone needs in this matter.
 """
 
-from cinemapy.decorators import convert_path_to_string
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from cinemapy.video.fx.resize import resize
-from cinemapy.video.VideoClip import ImageClip, TextClip
+from filmpy.decorators import convert_path_to_string
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from filmpy.video.fx.resize import resize
+from filmpy.video.VideoClip import ImageClip, TextClip
 
 
 class CreditsClip(TextClip):

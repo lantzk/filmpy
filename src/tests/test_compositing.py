@@ -5,14 +5,14 @@ import os
 import numpy as np
 import pytest
 
-from cinemapy.video.compositing.CompositeVideoClip import (
+from filmpy.video.compositing.CompositeVideoClip import (
     CompositeVideoClip,
     clips_array,
 )
-from cinemapy.video.compositing.concatenate import concatenate_videoclips
-from cinemapy.video.compositing.transitions import slide_in, slide_out
-from cinemapy.video.fx.resize import resize
-from cinemapy.video.VideoClip import BitmapClip, ColorClip
+from filmpy.video.compositing.concatenate import concatenate_videoclips
+from filmpy.video.compositing.transitions import slide_in, slide_out
+from filmpy.video.fx.resize import resize
+from filmpy.video.VideoClip import BitmapClip, ColorClip
 
 
 class ClipPixelTest:

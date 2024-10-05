@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from cinemapy.video.VideoClip import BitmapClip
+from filmpy.video.VideoClip import BitmapClip
 
 
 def test_clip_generation():

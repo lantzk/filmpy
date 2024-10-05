@@ -1,6 +1,6 @@
 import numpy as np
 
-from cinemapy.decorators import audio_video_fx, convert_parameter_to_seconds
+from filmpy.decorators import audio_video_fx, convert_parameter_to_seconds
 
 
 def _multiply_volume_in_range(factor, start_time, end_time, nchannels):
@@ -42,7 +42,7 @@ def multiply_volume(clip, factor, start_time=None, end_time=None):
     Examples
     --------
 
-    >>> from cinemapy import AudioFileClip
+    >>> from filmpy import AudioFileClip
     >>>
     >>> music = AudioFileClip('music.ogg')
     >>> doubled_audio_clip = clip.multiply_volume(2)  # doubles audio volume

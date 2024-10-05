@@ -4,10 +4,10 @@ import os
 
 import pytest
 
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from cinemapy.video.compositing.concatenate import concatenate_videoclips
-from cinemapy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
-from cinemapy.video.VideoClip import ColorClip, TextClip
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from filmpy.video.compositing.concatenate import concatenate_videoclips
+from filmpy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
+from filmpy.video.VideoClip import ColorClip, TextClip
 
 MEDIA_SUBTITLES_DATA = [
     ([0.0, 1.0], "Red!"),

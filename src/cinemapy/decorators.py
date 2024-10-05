@@ -1,11 +1,11 @@
-"""Decorators used by cinemapy."""
+"""Decorators used by filmpy."""
 
 import inspect
 import os
 
 import decorator
 
-from cinemapy.tools import convert_to_seconds
+from filmpy.tools import convert_to_seconds
 
 
 @decorator.decorator

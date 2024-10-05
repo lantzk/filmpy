@@ -4,7 +4,7 @@ import os
 import shutil
 import urllib.request
 
-from cinemapy.tools import subprocess_call
+from filmpy.tools import subprocess_call
 
 
 def download_webfile(url, filename, overwrite=False):
@@ -27,7 +27,7 @@ def download_webfile(url, filename, overwrite=False):
     Examples
     --------
 
-    >>> from cinemapy.io.downloader import download_website
+    >>> from filmpy.io.downloader import download_website
     >>>
     >>> download_website(
     ...     "http://localhost:8000/media/chaplin.mp4",

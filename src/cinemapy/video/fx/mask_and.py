@@ -1,6 +1,6 @@
 import numpy as np
 
-from cinemapy.video.VideoClip import ImageClip
+from filmpy.video.VideoClip import ImageClip
 
 
 def mask_and(clip, other_clip):

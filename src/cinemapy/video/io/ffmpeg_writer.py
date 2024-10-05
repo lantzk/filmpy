@@ -8,8 +8,8 @@ import subprocess as sp
 import numpy as np
 from proglog import proglog
 
-from cinemapy.config import FFMPEG_BINARY
-from cinemapy.tools import cross_platform_popen_params
+from filmpy.config import FFMPEG_BINARY
+from filmpy.tools import cross_platform_popen_params
 
 
 class FFMPEG_VideoWriter:
@@ -154,7 +154,7 @@ class FFMPEG_VideoWriter:
                 ffmpeg_error = self.logfile.read()
 
             error = (
-                f"{err}\n\ncinemapy error: FFMPEG encountered the following error while "
+                f"{err}\n\nfilmpy error: FFMPEG encountered the following error while "
                 f"writing file {self.filename}:\n\n {ffmpeg_error}"
             )
 
@@ -235,7 +235,7 @@ def ffmpeg_write_video(
     logger = proglog.default_bar_logger(logger)
 
     logfile = open(filename + ".log", "w+") if write_logfile else None
-    logger(message=f"cinemapy - Writing video {filename}\n")
+    logger(message=f"filmpy - Writing video {filename}\n")
     if not pixel_format:
         pixel_format = "rgba" if with_mask else "rgb24"
     with FFMPEG_VideoWriter(
@@ -264,7 +264,7 @@ def ffmpeg_write_video(
 
     if write_logfile:
         logfile.close()
-    logger(message="cinemapy - Done !")
+    logger(message="filmpy - Done !")
 
 
 def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
@@ -318,7 +318,7 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
 
     if proc.returncode:
         error = (
-            f"{err}\n\ncinemapy error: FFMPEG encountered the following error while "
+            f"{err}\n\nfilmpy error: FFMPEG encountered the following error while "
             f"writing file {filename} with command {cmd}:\n\n {err.decode()}"
         )
 

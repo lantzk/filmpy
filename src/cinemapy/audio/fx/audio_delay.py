@@ -1,8 +1,8 @@
 import numpy as np
 
-from cinemapy.audio.AudioClip import CompositeAudioClip
-from cinemapy.audio.fx.multiply_volume import multiply_volume
-from cinemapy.decorators import audio_video_fx
+from filmpy.audio.AudioClip import CompositeAudioClip
+from filmpy.audio.fx.multiply_volume import multiply_volume
+from filmpy.decorators import audio_video_fx
 
 
 @audio_video_fx
@@ -30,7 +30,7 @@ def audio_delay(clip, offset=0.2, n_repeats=8, decay=1):
     Examples
     --------
 
-    >>> from cinemapy import *
+    >>> from filmpy import *
     >>> videoclip = AudioFileClip('myaudio.wav').fx(
     ...     audio_delay, offset=.2, n_repeats=10, decayment=.2
     ... )

@@ -1,13 +1,13 @@
-"""cinemapy audio reading with ffmpeg."""
+"""filmpy audio reading with ffmpeg."""
 
 import subprocess as sp
 import warnings
 
 import numpy as np
 
-from cinemapy.config import FFMPEG_BINARY
-from cinemapy.tools import cross_platform_popen_params
-from cinemapy.video.io.ffmpeg_reader import ffmpeg_parse_infos
+from filmpy.config import FFMPEG_BINARY
+from filmpy.tools import cross_platform_popen_params
+from filmpy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 
 class FFMPEG_AudioReader:

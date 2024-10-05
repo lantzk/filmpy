@@ -28,7 +28,7 @@ def subprocess_call(cmd, logger="bar"):
     Set logger to None or a custom Proglog logger to avoid printings.
     """
     logger = proglog.default_bar_logger(logger)
-    logger(message="cinemapy - Running:\n>>> " + " ".join(cmd))
+    logger(message="filmpy - Running:\n>>> " + " ".join(cmd))
 
     popen_params = cross_platform_popen_params(
         {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
@@ -40,10 +40,10 @@ def subprocess_call(cmd, logger="bar"):
     proc.stderr.close()
 
     if proc.returncode:
-        logger(message="cinemapy - Command returned an error")
+        logger(message="filmpy - Command returned an error")
         raise OSError(err.decode("utf8"))
     else:
-        logger(message="cinemapy - Command successful")
+        logger(message="filmpy - Command successful")
 
     del proc
 
@@ -116,7 +116,7 @@ def deprecated_version_of(func, old_name):
     )
 
     def deprecated_func(*args, **kwargs):
-        warnings.warn("cinemapy: " + warning, PendingDeprecationWarning)
+        warnings.warn("filmpy: " + warning, PendingDeprecationWarning)
         return func(*args, **kwargs)
 
     deprecated_func.__doc__ = warning
@@ -163,7 +163,7 @@ def find_extension(codec):
         if codec in infos.get("codec", []):
             return ext
     raise ValueError(
-        "The audio_codec you chose is unknown by cinemapy. "
+        "The audio_codec you chose is unknown by filmpy. "
         "You should report this. In the meantime, you can "
         "specify a temp_audiofile with the right extension "
         "in write_videofile."

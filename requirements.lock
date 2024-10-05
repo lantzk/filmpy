@@ -18,21 +18,21 @@ coverage==7.6.1
     # via coveralls
     # via pytest-cov
 coveralls==4.0.1
-    # via cinemapy
+    # via filmpy
 decorator==5.1.1
-    # via cinemapy
+    # via filmpy
 docopt==0.6.2
     # via coveralls
 idna==3.10
     # via requests
 imageio==2.35.1
-    # via cinemapy
+    # via filmpy
 imageio-ffmpeg==0.5.1
-    # via cinemapy
+    # via filmpy
 iniconfig==2.0.0
     # via pytest
 numpy==2.1.1
-    # via cinemapy
+    # via filmpy
     # via imageio
 packaging==24.1
     # via pytest
@@ -41,16 +41,16 @@ pillow==10.4.0
 pluggy==1.5.0
     # via pytest
 proglog==0.1.10
-    # via cinemapy
+    # via filmpy
 pytest==8.3.3
-    # via cinemapy
+    # via filmpy
     # via pytest-cov
 pytest-cov==5.0.0
-    # via cinemapy
+    # via filmpy
 requests==2.32.3
     # via coveralls
 ruff==0.6.9
-    # via cinemapy
+    # via filmpy
 setuptools==75.1.0
     # via imageio-ffmpeg
 tqdm==4.66.5
@@ -58,4 +58,4 @@ tqdm==4.66.5
 urllib3==2.2.3
     # via requests
 uv==0.4.18
-    # via cinemapy
+    # via filmpy

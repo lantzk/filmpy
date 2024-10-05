@@ -8,14 +8,14 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from cinemapy.audio.AudioClip import AudioClip
-from cinemapy.audio.io.AudioFileClip import AudioFileClip
-from cinemapy.tools import convert_to_seconds
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from cinemapy.video.fx.mask_color import mask_color
-from cinemapy.video.fx.multiply_speed import multiply_speed
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
+from filmpy.audio.AudioClip import AudioClip
+from filmpy.audio.io.AudioFileClip import AudioFileClip
+from filmpy.tools import convert_to_seconds
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from filmpy.video.fx.mask_color import mask_color
+from filmpy.video.fx.multiply_speed import multiply_speed
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 
 def test_aspect_ratio():
@@ -59,7 +59,7 @@ def test_check_codec(util, video):
         clip.write_videofile(location)
     except ValueError as e:
         assert (
-            "cinemapy couldn't find the codec associated with the filename."
+            "filmpy couldn't find the codec associated with the filename."
             " Provide the 'codec' parameter in write_videofile." in str(e)
         )
 
@@ -82,7 +82,7 @@ def test_write_frame_errors(util, video):
 
 def test_write_frame_errors_with_redirected_logs(util, video):
     """Checks error cases return helpful messages even when logs redirected.
-    See https://github.com/Zulko/cinemapy/issues/877
+    See https://github.com/Zulko/filmpy/issues/877
     """
     clip = video()
     location = os.path.join(util.TMP_DIR, "logged-write.mp4")
@@ -133,7 +133,7 @@ def test_write_videofiles_with_temp_audiofile_path(util):
     ),
 )
 def test_save_frame(util, with_mask, t, mask_color, frames):
-    filename = os.path.join(util.TMP_DIR, "cinemapy_VideoClip_save_frame.png")
+    filename = os.path.join(util.TMP_DIR, "filmpy_VideoClip_save_frame.png")
     if os.path.isfile(filename):
         with contextlib.suppress(PermissionError):
             os.remove(filename)

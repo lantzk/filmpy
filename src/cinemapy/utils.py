@@ -1,8 +1,8 @@
-"""Useful utilities working with cinemapy."""
+"""Useful utilities working with filmpy."""
 
-from cinemapy.audio.io.AudioFileClip import AudioFileClip
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.VideoClip import ImageClip
+from filmpy.audio.io.AudioFileClip import AudioFileClip
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.VideoClip import ImageClip
 
 CLIP_TYPES = {
     "audio": AudioFileClip,

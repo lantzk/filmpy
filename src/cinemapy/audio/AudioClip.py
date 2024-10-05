@@ -10,10 +10,10 @@ import os
 import numpy as np
 import proglog
 
-from cinemapy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
-from cinemapy.Clip import Clip
-from cinemapy.decorators import convert_path_to_string, requires_duration
-from cinemapy.tools import extensions_dict
+from filmpy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
+from filmpy.Clip import Clip
+from filmpy.decorators import convert_path_to_string, requires_duration
+from filmpy.tools import extensions_dict
 
 
 class AudioClip(Clip):
@@ -238,7 +238,7 @@ class AudioClip(Clip):
                 codec = extensions_dict[ext[1:]]["codec"][0]
             except KeyError:
                 raise ValueError(
-                    "cinemapy couldn't find the codec associated "
+                    "filmpy couldn't find the codec associated "
                     "with the filename. Provide the 'codec' "
                     "parameter in write_audiofile."
                 )

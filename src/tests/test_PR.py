@@ -5,13 +5,13 @@ from pathlib import Path
 
 import pytest
 
-from cinemapy.audio.io.AudioFileClip import AudioFileClip
-from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from cinemapy.video.fx.scroll import scroll
-from cinemapy.video.io.VideoFileClip import VideoFileClip
-from cinemapy.video.tools.interpolators import Trajectory
-from cinemapy.video.tools.subtitles import SubtitlesClip
-from cinemapy.video.VideoClip import ColorClip, ImageClip, TextClip
+from filmpy.audio.io.AudioFileClip import AudioFileClip
+from filmpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from filmpy.video.fx.scroll import scroll
+from filmpy.video.io.VideoFileClip import VideoFileClip
+from filmpy.video.tools.interpolators import Trajectory
+from filmpy.video.tools.subtitles import SubtitlesClip
+from filmpy.video.VideoClip import ColorClip, ImageClip, TextClip
 
 
 def test_PR_306():

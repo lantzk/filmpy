@@ -1,4 +1,4 @@
-from cinemapy.decorators import requires_duration
+from filmpy.decorators import requires_duration
 
 
 @requires_duration

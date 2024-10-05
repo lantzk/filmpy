@@ -20,11 +20,11 @@ coverage==7.6.1
     # via coveralls
     # via pytest-cov
 coveralls==4.0.1
-    # via cinemapy
+    # via filmpy
 cycler==0.12.1
     # via matplotlib
 decorator==5.1.1
-    # via cinemapy
+    # via filmpy
 docopt==0.6.2
     # via coveralls
 fonttools==4.54.1
@@ -32,10 +32,10 @@ fonttools==4.54.1
 idna==3.10
     # via requests
 imageio==2.35.1
-    # via cinemapy
+    # via filmpy
     # via scikit-image
 imageio-ffmpeg==0.5.1
-    # via cinemapy
+    # via filmpy
 iniconfig==2.0.0
     # via pytest
 joblib==1.4.2
@@ -48,8 +48,8 @@ matplotlib==3.9.2
 networkx==3.3
     # via scikit-image
 numpy==2.1.1
-    # via cinemapy
     # via contourpy
+    # via filmpy
     # via imageio
     # via matplotlib
     # via opencv-python
@@ -70,22 +70,22 @@ pillow==10.4.0
 pluggy==1.5.0
     # via pytest
 proglog==0.1.10
-    # via cinemapy
+    # via filmpy
 pygame==2.6.1
 pyparsing==3.1.4
     # via matplotlib
 pytest==8.3.3
-    # via cinemapy
+    # via filmpy
     # via pytest-cov
 pytest-cov==5.0.0
-    # via cinemapy
+    # via filmpy
 python-dateutil==2.9.0.post0
     # via matplotlib
 python-dotenv==1.0.1
 requests==2.32.3
     # via coveralls
 ruff==0.6.9
-    # via cinemapy
+    # via filmpy
 scikit-image==0.24.0
 scikit-learn==1.5.2
 scipy==1.14.1
@@ -104,5 +104,5 @@ tqdm==4.66.5
 urllib3==2.2.3
     # via requests
 uv==0.4.18
-    # via cinemapy
+    # via filmpy
 youtube-dl==2021.12.17

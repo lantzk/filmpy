@@ -1,4 +1,4 @@
-"""cinemapy video and audio effects tests."""
+"""filmpy video and audio effects tests."""
 
 import decimal
 import importlib
@@ -11,7 +11,7 @@ import sys
 import numpy as np
 import pytest
 
-from cinemapy import (
+from filmpy import (
     AudioClip,
     AudioFileClip,
     BitmapClip,
@@ -19,7 +19,7 @@ from cinemapy import (
     VideoClip,
     VideoFileClip,
 )
-from cinemapy.audio.fx import (
+from filmpy.audio.fx import (
     audio_delay,
     audio_fadein,
     audio_fadeout,
@@ -27,8 +27,8 @@ from cinemapy.audio.fx import (
     multiply_stereo_volume,
     multiply_volume,
 )
-from cinemapy.tools import convert_to_seconds
-from cinemapy.video.fx import (
+from filmpy.tools import convert_to_seconds
+from filmpy.video.fx import (
     blackwhite,
     crop,
     even_size,
@@ -962,7 +962,7 @@ def test_rotate(
     # if the scenario implies that PIL is not installed, monkeypatch the
     # module in which 'rotate' function resides
     if not PIL_installed:
-        rotate_module = importlib.import_module("cinemapy.video.fx.rotate")
+        rotate_module = importlib.import_module("filmpy.video.fx.rotate")
         monkeypatch.setattr(rotate_module, "Image", None)
         rotate_func = rotate_module.rotate
     else:
@@ -999,7 +999,7 @@ def test_rotate_nonstandard_angles(util):
 
 
 def test_rotate_mask():
-    # Prior to https://github.com/Zulko/cinemapy/pull/1399
+    # Prior to https://github.com/Zulko/filmpy/pull/1399
     # all the pixels of the resulting video were 0
     clip = (
         ColorClip(color=0.5, size=(1, 1), is_mask=True)
@@ -1032,7 +1032,7 @@ def test_rotate_supported_PIL_kwargs(
     monkeypatch,
 ):
     """Test supported 'rotate' FX arguments by PIL version."""
-    rotate_module = importlib.import_module("cinemapy.video.fx.rotate")
+    rotate_module = importlib.import_module("filmpy.video.fx.rotate")
 
     # patch supported kwargs data by PIL version
     new_PIL_rotate_kwargs_supported, min_version_by_kwarg_name = ({}, {})
