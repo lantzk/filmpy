@@ -10,6 +10,7 @@
 .pydevproject
 .sublime-project
 .vscode
+.VSCodeCounter
 
 # Python dev tooling
 .mr.developer.cfg
@@ -53,6 +54,7 @@ nosetests.xml
 
 # Media files for testing
 tests/media/
+__temp__*
 
 # Translations
 *.mo
