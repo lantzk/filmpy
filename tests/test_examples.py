@@ -1,14 +1,12 @@
-"""MoviePy examples tests."""
+"""cinemapy examples tests."""
 
 import os
 
 import numpy as np
-
 import pytest
 
-from moviepy.video.io.bindings import mplfig_to_npimage
-from moviepy.video.VideoClip import VideoClip
-
+from cinemapy.video.io.bindings import mplfig_to_npimage
+from cinemapy.video.VideoClip import VideoClip
 
 try:
     import matplotlib.pyplot

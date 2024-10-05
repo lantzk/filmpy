@@ -1,3 +1,3 @@
-Install testing dependencies: `pip install moviepy[test]`
+Install testing dependencies: `pip install cinemapy[test]`
 
 Run tests: `pytest`

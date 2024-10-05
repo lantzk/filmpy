@@ -4,14 +4,13 @@ import os
 
 import pytest
 
-from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.compositing.transitions import crossfadein, crossfadeout
-from moviepy.video.fx.resize import resize
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
-
+from cinemapy.audio.io.AudioFileClip import AudioFileClip
+from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from cinemapy.video.compositing.concatenate import concatenate_videoclips
+from cinemapy.video.compositing.transitions import crossfadein, crossfadeout
+from cinemapy.video.fx.resize import resize
+from cinemapy.video.io.VideoFileClip import VideoFileClip
+from cinemapy.video.VideoClip import ColorClip, ImageClip, VideoClip
 
 try:
     import matplotlib.pyplot
@@ -53,8 +52,6 @@ def test_issue_285():
 
 def test_issue_334(util):
     # NOTE: this is horrible. Any simpler version ?
-    last_move = None
-    last_move1 = None
 
     lis = [
         (0.0, 113, 167, 47),
@@ -275,7 +272,7 @@ def test_issue_368(util):
     from sklearn import svm
     from sklearn.datasets import make_moons
 
-    from moviepy.video.io.bindings import mplfig_to_npimage
+    from cinemapy.video.io.bindings import mplfig_to_npimage
 
     plt.switch_backend("Agg")
 
@@ -357,7 +354,7 @@ def test_issue_417():
 
 
 def test_issue_470(util):
-    wav_filename = os.path.join(util.TMP_DIR, "moviepy_issue_470.wav")
+    wav_filename = os.path.join(util.TMP_DIR, "cinemapy_issue_470.wav")
 
     audio_clip = AudioFileClip("media/crunching.mp3")
 
@@ -386,9 +383,10 @@ def test_issue_547():
 
 
 def test_issue_636():
-    with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 11) as video:
-        with video.subclip(0, 1) as _:
-            pass
+    with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(
+        0, 11
+    ) as video, video.subclip(0, 1) as _:
+        pass
 
 
 def test_issue_655():

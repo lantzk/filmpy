@@ -1,4 +1,4 @@
-"""MoviePy video and audio effects tests."""
+"""cinemapy video and audio effects tests."""
 
 import decimal
 import importlib
@@ -9,10 +9,9 @@ import random
 import sys
 
 import numpy as np
-
 import pytest
 
-from moviepy import (
+from cinemapy import (
     AudioClip,
     AudioFileClip,
     BitmapClip,
@@ -20,7 +19,7 @@ from moviepy import (
     VideoClip,
     VideoFileClip,
 )
-from moviepy.audio.fx import (
+from cinemapy.audio.fx import (
     audio_delay,
     audio_fadein,
     audio_fadeout,
@@ -28,8 +27,8 @@ from moviepy.audio.fx import (
     multiply_stereo_volume,
     multiply_volume,
 )
-from moviepy.tools import convert_to_seconds
-from moviepy.video.fx import (
+from cinemapy.tools import convert_to_seconds
+from cinemapy.video.fx import (
     blackwhite,
     crop,
     even_size,
@@ -517,10 +516,11 @@ def test_make_loopable(util, video):
     ),
 )
 def test_margin(ClipClass, margin_size, margins, color, expected_result):
-    if ClipClass is BitmapClip:
-        clip = BitmapClip([["RRR", "RRR"], ["RRR", "RRR"]], fps=1)
-    else:
-        clip = ColorClip(color=(255, 0, 0), size=(3, 2), duration=2).with_fps(1)
+    clip = (
+        BitmapClip([["RRR", "RRR"], ["RRR", "RRR"]], fps=1)
+        if ClipClass is BitmapClip
+        else ColorClip(color=(255, 0, 0), size=(3, 2), duration=2).with_fps(1)
+    )
 
     # if None, set default argument values
     if color is None:
@@ -772,7 +772,7 @@ def test_resize(
     # build expected sizes (using `width` or `height` arguments will be proportional
     # to original size)
     if new_size:
-        if hasattr(new_size, "__call__"):
+        if callable(new_size):
             # function
             expected_new_sizes = [new_size(t) for t in range(duration)]
         elif isinstance(new_size, numbers.Number):
@@ -782,7 +782,7 @@ def test_resize(
             # tuple or list
             expected_new_sizes = [new_size]
     elif height:
-        if hasattr(height, "__call__"):
+        if callable(height):
             expected_new_sizes = []
             for t in range(duration):
                 new_height = height(t)
@@ -792,7 +792,7 @@ def test_resize(
         else:
             expected_new_sizes = [[size[0] * height / size[1], height]]
     elif width:
-        if hasattr(width, "__call__"):
+        if callable(width):
             expected_new_sizes = []
             for t in range(duration):
                 new_width = width(t)
@@ -937,13 +937,11 @@ def test_rotate(
     original_frames = [["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]
 
     # angles are defined in degrees, so convert to radians testing ``unit="rad"``
-    if unit == "rad":
-        if hasattr(angle, "__call__"):
-            _angle = lambda t: math.radians(angle(0))
-        else:
-            _angle = math.radians(angle)
-    else:
-        _angle = angle
+    _angle = (
+        ((lambda t: math.radians(angle(0))) if callable(angle) else math.radians(angle))
+        if unit == "rad"
+        else angle
+    )
     clip = BitmapClip(original_frames, fps=1)
 
     kwargs = {
@@ -956,15 +954,15 @@ def test_rotate(
     if resample not in ["bilinear", "nearest", "bicubic"]:
         with pytest.raises(ValueError) as exc:
             clip.rotate(_angle, **kwargs)
-        assert (
+        assert str(exc.value) == (
             "'resample' argument must be either 'bilinear', 'nearest' or 'bicubic'"
-        ) == str(exc.value)
+        )
         return
 
     # if the scenario implies that PIL is not installed, monkeypatch the
     # module in which 'rotate' function resides
     if not PIL_installed:
-        rotate_module = importlib.import_module("moviepy.video.fx.rotate")
+        rotate_module = importlib.import_module("cinemapy.video.fx.rotate")
         monkeypatch.setattr(rotate_module, "Image", None)
         rotate_func = rotate_module.rotate
     else:
@@ -972,10 +970,7 @@ def test_rotate(
 
     # resolve the angle, because if it is a multiple of 90, the rotation
     # can be computed event without an available PIL installation
-    if hasattr(_angle, "__call__"):
-        _resolved_angle = _angle(0)
-    else:
-        _resolved_angle = _angle
+    _resolved_angle = _angle(0) if callable(_angle) else _angle
     if unit == "rad":
         _resolved_angle = math.degrees(_resolved_angle)
 
@@ -1004,7 +999,7 @@ def test_rotate_nonstandard_angles(util):
 
 
 def test_rotate_mask():
-    # Prior to https://github.com/Zulko/moviepy/pull/1399
+    # Prior to https://github.com/Zulko/cinemapy/pull/1399
     # all the pixels of the resulting video were 0
     clip = (
         ColorClip(color=0.5, size=(1, 1), is_mask=True)
@@ -1037,7 +1032,7 @@ def test_rotate_supported_PIL_kwargs(
     monkeypatch,
 ):
     """Test supported 'rotate' FX arguments by PIL version."""
-    rotate_module = importlib.import_module("moviepy.video.fx.rotate")
+    rotate_module = importlib.import_module("cinemapy.video.fx.rotate")
 
     # patch supported kwargs data by PIL version
     new_PIL_rotate_kwargs_supported, min_version_by_kwarg_name = ({}, {})
@@ -1186,7 +1181,10 @@ def test_audio_normalize():
 
 def test_audio_normalize_muted():
     z_array = np.array([0.0])
-    make_frame = lambda t: z_array
+
+    def make_frame(t):
+        return z_array
+
     clip = AudioClip(make_frame, duration=1, fps=44100)
     clip = audio_normalize(clip)
     assert np.array_equal(clip.to_soundarray(), z_array)
@@ -1277,14 +1275,15 @@ def test_multiply_volume_audioclip(
     end_time,
 ):
     if sound_type == "stereo":
-        make_frame = lambda t: np.array(
-            [
-                np.sin(440 * 2 * np.pi * t),
-                np.sin(160 * 2 * np.pi * t),
-            ]
-        ).T.copy(order="C")
+
+        def make_frame(t):
+            return np.array(
+                [np.sin(440 * 2 * np.pi * t), np.sin(160 * 2 * np.pi * t)]
+            ).T.copy(order="C")
     else:
-        make_frame = lambda t: [np.sin(440 * 2 * np.pi * t)]
+
+        def make_frame(t):
+            return [np.sin(440 * 2 * np.pi * t)]
 
     clip = AudioClip(
         make_frame,
@@ -1422,7 +1421,9 @@ def test_multiply_stereo_volume():
     assert np.array_equal(left_channel_doubled, expected_left_channel_doubled)
 
     # mono muted
-    sinus_wave = lambda t: [np.sin(440 * 2 * np.pi * t)]
+    def sinus_wave(t):
+        return [np.sin(440 * 2 * np.pi * t)]
+
     mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
     muted_mono_clip = multiply_stereo_volume(mono_clip, left=0)
     mono_channel_muted = muted_mono_clip.to_soundarray()
@@ -1537,10 +1538,11 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
 def test_audio_fadein(
     mono_wave, stereo_wave, sound_type, fps, clip_duration, fadein_duration
 ):
-    if sound_type == "stereo":
-        make_frame = stereo_wave(left_freq=440, right_freq=160)
-    else:
-        make_frame = mono_wave(440)
+    make_frame = (
+        stereo_wave(left_freq=440, right_freq=160)
+        if sound_type == "stereo"
+        else mono_wave(440)
+    )
 
     clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
     new_clip = audio_fadein(clip, fadein_duration)
@@ -1598,10 +1600,11 @@ def test_audio_fadein(
 def test_audio_fadeout(
     mono_wave, stereo_wave, sound_type, fps, clip_duration, fadeout_duration
 ):
-    if sound_type == "stereo":
-        make_frame = stereo_wave(left_freq=440, right_freq=160)
-    else:
-        make_frame = mono_wave(440)
+    make_frame = (
+        stereo_wave(left_freq=440, right_freq=160)
+        if sound_type == "stereo"
+        else mono_wave(440)
+    )
 
     clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
     new_clip = audio_fadeout(clip, fadeout_duration)

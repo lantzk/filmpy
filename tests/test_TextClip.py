@@ -3,11 +3,10 @@
 import os
 
 import numpy as np
-
 import pytest
 
-from moviepy.video.fx.blink import blink
-from moviepy.video.VideoClip import TextClip
+from cinemapy.video.fx.blink import blink
+from cinemapy.video.VideoClip import TextClip
 
 
 def test_list():

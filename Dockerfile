@@ -12,9 +12,9 @@ RUN apt-get install -y locales && \
 
 ENV LC_ALL C.UTF-8
 
-ADD . /var/src/moviepy/
-#RUN git clone https://github.com/Zulko/moviepy.git /var/src/moviepy
-RUN cd /var/src/moviepy/ && pip install .[optional]
+ADD . /var/src/cinemapy/
+#RUN git clone https://github.com/Zulko/cinemapy.git /var/src/cinemapy
+RUN cd /var/src/cinemapy/ && pip install .[optional]
 
 # modify ImageMagick policy file so that Textclips work correctly.
 RUN sed -i 's/none/read,write/g' /etc/ImageMagick-6/policy.xml 

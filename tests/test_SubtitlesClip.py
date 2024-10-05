@@ -4,11 +4,10 @@ import os
 
 import pytest
 
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
-from moviepy.video.VideoClip import ColorClip, TextClip
-
+from cinemapy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from cinemapy.video.compositing.concatenate import concatenate_videoclips
+from cinemapy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
+from cinemapy.video.VideoClip import ColorClip, TextClip
 
 MEDIA_SUBTITLES_DATA = [
     ([0.0, 1.0], "Red!"),
@@ -30,15 +29,16 @@ def test_subtitles(util):
     myvideo = concatenate_videoclips([red, green, blue])
     assert myvideo.duration == 30
 
-    generator = lambda txt: TextClip(
-        txt,
-        font=util.FONT,
-        size=(800, 600),
-        font_size=24,
-        method="caption",
-        align="South",
-        color="white",
-    )
+    def generator(txt):
+        return TextClip(
+            txt,
+            font=util.FONT,
+            size=(800, 600),
+            font_size=24,
+            method="caption",
+            align="South",
+            color="white",
+        )
 
     subtitles = SubtitlesClip("media/subtitles.srt", generator)
     final = CompositeVideoClip([myvideo, subtitles])
@@ -55,12 +55,13 @@ def test_subtitles(util):
 
 
 def test_file_to_subtitles():
-    assert MEDIA_SUBTITLES_DATA == file_to_subtitles("media/subtitles.srt")
+    assert file_to_subtitles("media/subtitles.srt") == MEDIA_SUBTITLES_DATA
 
 
 def test_file_to_subtitles_unicode():
-    assert MEDIA_SUBTITLES_UNICODE_DATA == file_to_subtitles(
-        "media/subtitles-unicode.srt", encoding="utf-8"
+    assert (
+        file_to_subtitles("media/subtitles-unicode.srt", encoding="utf-8")
+        == MEDIA_SUBTITLES_UNICODE_DATA
     )
 
 

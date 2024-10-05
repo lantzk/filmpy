@@ -5,19 +5,18 @@ import subprocess
 import time
 
 import numpy as np
-
 import pytest
 
-from moviepy.audio.AudioClip import AudioClip
-from moviepy.config import FFMPEG_BINARY
-from moviepy.video.compositing.CompositeVideoClip import clips_array
-from moviepy.video.io.ffmpeg_reader import (
+from cinemapy.audio.AudioClip import AudioClip
+from cinemapy.config import FFMPEG_BINARY
+from cinemapy.video.compositing.CompositeVideoClip import clips_array
+from cinemapy.video.io.ffmpeg_reader import (
     FFMPEG_VideoReader,
     FFmpegInfosParser,
     ffmpeg_parse_infos,
 )
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import BitmapClip, ColorClip
+from cinemapy.video.io.VideoFileClip import VideoFileClip
+from cinemapy.video.VideoClip import BitmapClip, ColorClip
 
 
 def test_ffmpeg_parse_infos():
@@ -291,7 +290,7 @@ def test_ffmpeg_parse_video_rotation():
 
 
 def test_correct_video_rotation(util):
-    """See https://github.com/Zulko/moviepy/pull/577"""
+    """See https://github.com/Zulko/cinemapy/pull/577"""
     clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
 
     corrected_rotation_filename = os.path.join(
@@ -687,10 +686,10 @@ def test_release_of_file_via_close(util):
     red.fps = green.fps = blue.fps = 10
 
     # Repeat this so we can see no conflicts.
-    for i in range(3):
+    for _i in range(3):
         # Get the name of a temporary file we can use.
         local_video_filename = os.path.join(
-            util.TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
+            util.TMP_DIR, f"test_release_of_file_via_close_{int(time.time())}.mp4"
         )
 
         clip = clips_array([[red, green, blue]]).with_duration(0.5)
@@ -722,11 +721,11 @@ def test_failure_to_release_file(util):
     """
     # Get the name of a temporary file we can use.
     local_video_filename = os.path.join(
-        util.TMP_DIR, "test_release_of_file_%s.mp4" % int(time.time())
+        util.TMP_DIR, f"test_release_of_file_{int(time.time())}.mp4"
     )
 
     # Repeat this so we can see that the problems escalate:
-    for i in range(5):
+    for _i in range(5):
         # Create a random video file.
         red = ColorClip((256, 200), color=(255, 0, 0))
         green = ColorClip((256, 200), color=(0, 255, 0))
@@ -749,7 +748,7 @@ def test_failure_to_release_file(util):
             del clip
             del video
 
-        except IOError:
+        except OSError:
             print(
                 "On Windows, this succeeds the first few times around the loop"
                 " but eventually fails."
