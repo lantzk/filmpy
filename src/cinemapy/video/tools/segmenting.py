@@ -40,7 +40,7 @@ def find_objects(clip, size_threshold=500, preview=False):
         clip = clip.add_mask()
 
     mask = clip.mask.get_frame(0)
-    labelled, num_features = ndi.measurements.label(image[:, :, 0])
+    labelled, num_features = ndi.label(image[:, :, 0])
 
     # find the objects
     slices = []

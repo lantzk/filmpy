@@ -12,7 +12,7 @@ from numbers import Real
 
 import numpy as np
 import proglog
-from imageio import imread, imsave
+from imageio.v2 import imread, imsave
 from PIL import Image
 
 from cinemapy.Clip import Clip
@@ -1505,11 +1505,22 @@ class BitmapClip(VideoClip):
         self.fps = fps
 
     def to_bitmap(self, color_dict=None):
-        """Returns a valid bitmap list that represents each frame of the clip.
-        If `color_dict` is not specified, then it will use the same `color_dict`
-        that was used to create the clip.
+        """
+        Convert an image's frames into a bitmap of ASCII characters based on the closest color match.
+        Parameters:
+            - color_dict (dict, optional): A dictionary mapping ASCII characters to RGB color values. Defaults to the instance's color_dict.
+        Returns:
+            - list: A list of frames, each containing lines of ASCII characters representing the image.
+        Example:
+            - to_bitmap({'A': (0, 0, 0), 'B': (255, 255, 255)}) -> [['AAABBB', 'AAABBB', 'AAABBB'], ['BBBAAA', 'BBBAAA', 'BBBAAA']]
         """
         color_dict = color_dict or self.color_dict
+
+        def find_closest_color(pixel):
+            pixel = np.array(pixel)
+            colors = np.array(list(color_dict.values()))
+            distances = np.sum((colors - pixel.astype(float)) ** 2, axis=1)
+            return list(color_dict.keys())[np.argmin(distances)]
 
         bitmap = []
         for frame in self.iter_frames():
@@ -1517,9 +1528,7 @@ class BitmapClip(VideoClip):
             for line in frame:
                 bitmap[-1].append("")
                 for pixel in line:
-                    letter = list(color_dict.keys())[
-                        list(color_dict.values()).index(tuple(pixel))
-                    ]
+                    letter = find_closest_color(pixel)
                     bitmap[-1][-1] += letter
 
         return bitmap

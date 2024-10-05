@@ -661,20 +661,20 @@ def test_seeking_beyond_file_end():
     reader = FFMPEG_VideoReader("media/test_video.mp4")
     frame_1 = reader.get_frame(0)
 
-    with pytest.warns(UserWarning, match="Using the last valid frame instead"):
+    with pytest.warns(UserWarning, match="Attempting to read past the end of the file"):
         end_of_file_frame = reader.get_frame(5)
     assert np.array_equal(frame_1, end_of_file_frame)
-    assert reader.pos == 6
+    assert reader.pos == 5  # The position should not increment past the last frame
 
     # Try again with a jump larger than 100 frames
     # (which triggers different behaviour in `.get_frame()`
     reader = FFMPEG_VideoReader("media/big_buck_bunny_0_30.webm")
     frame_1 = reader.get_frame(0)
 
-    with pytest.warns(UserWarning, match="Using the last valid frame instead"):
+    with pytest.warns(UserWarning, match="Attempting to read past the end of the file"):
         end_of_file_frame = reader.get_frame(30)
     assert np.array_equal(frame_1, end_of_file_frame)
-    assert reader.pos == 30 * 24 + 1
+    assert reader.pos == reader.n_frames  # The position should be at the last frame
 
 
 def test_release_of_file_via_close(util):
