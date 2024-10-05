@@ -1,0 +1,44 @@
+[project]
+name = "cinemapy"
+version = "0.1.0"
+description = "cinemapy is a Python library for video processing and manipulation based on MoviePy"
+authors = [
+    { name = "lantzk", email = "9219265+lantzk@users.noreply.github.com" }
+]
+dependencies = [
+    "decorator>=5.1.1",
+    "imageio>=2.35.1",
+    "imageio-ffmpeg>=0.5.1",
+    "numpy>=2.1.1",
+    "proglog>=0.1.10",
+    "ruff>=0.6.9",
+    "uv>=0.4.18",
+    "coveralls>=4.0.1",
+    "pytest-cov>=5.0.0",
+    "pytest>=8.3.3",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pygame>=2.6.1",
+    "python-dotenv>=1.0.1",
+    "opencv-python>=4.10.0.84",
+    "scikit-image>=0.24.0",
+    "scikit-learn>=1.5.2",
+    "scipy>=1.14.1",
+    "matplotlib>=3.9.2",
+    "youtube-dl>=2021.12.17",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cinemapy"]
