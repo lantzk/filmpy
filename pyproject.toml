@@ -1,6 +1,6 @@
 [project]
 name = "filmpy"
-version = "0.1.0"
+version = "0.1.1"
 description = "filmpy is a Python library for video processing and manipulation based on MoviePy"
 authors = [
     { name = "lantzk", email = "9219265+lantzk@users.noreply.github.com" }
