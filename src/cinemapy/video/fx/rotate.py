@@ -1,33 +1,26 @@
 import math
 import warnings
-
 import numpy as np
 
 try:
-    import PIL
-
-    PIL_rotate_kwargs_supported = {
-        # [cinemapy rotate argument name,
-        #  PIL.rotate argument supported,
-        #  minimum PIL version required]
-        "fillcolor": ["bg_color", False, (5, 2, 0)],
-        "center": ["center", False, (4, 0, 0)],
-        "translate": ["translate", False, (4, 0, 0)],
-    }
-
-    if hasattr(PIL, "__version__"):
-        # check support for PIL.rotate arguments
-        PIL__version_info__ = tuple(int(n) for n in PIL.__version__ if n.isdigit())
-
-        for PIL_rotate_kw_name, support_data in PIL_rotate_kwargs_supported.items():
-            if PIL__version_info__ >= support_data[2]:
-                PIL_rotate_kwargs_supported[PIL_rotate_kw_name][1] = True
-
-    Image = PIL.Image
-
-except ImportError:  # pragma: no cover
+    from PIL import Image, ImageChops
+    PIL_INSTALLED = True
+except ImportError:
+    PIL_INSTALLED = False
     Image = None
+    ImageChops = None
 
+PIL_rotate_kwargs_supported = {
+    "fillcolor": ["bg_color", False, (5, 2, 0)],
+    "center": ["center", False, (4, 0, 0)],
+    "translate": ["translate", False, (4, 0, 0)],
+}
+
+if PIL_INSTALLED and hasattr(Image, "__version__"):
+    PIL__version_info__ = tuple(int(n) for n in Image.__version__.split('.') if n.isdigit())
+    for PIL_rotate_kw_name, support_data in PIL_rotate_kwargs_supported.items():
+        if PIL__version_info__ >= support_data[2]:
+            PIL_rotate_kwargs_supported[PIL_rotate_kw_name][1] = True
 
 def rotate(
     clip,
@@ -39,124 +32,67 @@ def rotate(
     translate=None,
     bg_color=None,
 ):
-    """
-    Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
-    If the angle is not a multiple of 90 (degrees) or ``center``, ``translate``,
-    and ``bg_color`` are not ``None``, the package ``pillow`` must be installed,
-    and there will be black borders. You can make them transparent with:
+    if resample not in ["bilinear", "nearest", "bicubic"]:
+        raise ValueError(
+            "'resample' argument must be either 'bilinear', 'nearest' or 'bicubic'"
+        )
 
-    >>> new_clip = clip.add_mask().rotate(72)
-
-    Parameters
-    ----------
-
-    clip : VideoClip
-      A video clip.
-
-    angle : float
-      Either a value or a function angle(t) representing the angle of rotation.
-
-    unit : str, optional
-      Unit of parameter `angle` (either "deg" for degrees or "rad" for radians).
-
-    resample : str, optional
-      An optional resampling filter. One of "nearest", "bilinear", or "bicubic".
-
-    expand : bool, optional
-      If true, expands the output image to make it large enough to hold the
-      entire rotated image. If false or omitted, make the output image the same
-      size as the input image.
-
-    translate : tuple, optional
-      An optional post-rotate translation (a 2-tuple).
-
-    center : tuple, optional
-      Optional center of rotation (a 2-tuple). Origin is the upper left corner.
-
-    bg_color : tuple, optional
-      An optional color for area outside the rotated image. Only has effect if
-      ``expand`` is true.
-    """
-    if Image:
-        try:
-            resample = {
-                "bilinear": Image.BILINEAR,
-                "nearest": Image.NEAREST,
-                "bicubic": Image.BICUBIC,
-            }[resample]
-        except KeyError:
-            raise ValueError(
-                "'resample' argument must be either 'bilinear', 'nearest' or 'bicubic'"
-            )
-
-    get_angle = angle if callable(angle) else lambda t: angle
+    def simple_rotate_90(frame, k):
+        return np.rot90(frame, k)
 
     def filter(get_frame, t):
-        angle = get_angle(t)
-        im = get_frame(t)
-
+        frame = get_frame(t)
+        current_angle = angle(t) if callable(angle) else angle
+        
         if unit == "rad":
-            angle = math.degrees(angle)
+            current_angle = math.degrees(current_angle)
 
-        angle %= 360
-        if not center and not translate and not bg_color:
-            if (angle == 0) and expand:
-                return im
-            if (angle == 90) and expand:
-                transpose = [1, 0] if len(im.shape) == 2 else [1, 0, 2]
-                return np.transpose(im, axes=transpose)[::-1]
-            elif (angle == 270) and expand:
-                transpose = [1, 0] if len(im.shape) == 2 else [1, 0, 2]
-                return np.transpose(im, axes=transpose)[:, ::-1]
-            elif (angle == 180) and expand:
-                return im[::-1, ::-1]
+        # Handle simple 90-degree rotations without PIL
+        if current_angle % 90 == 0 and not center and not translate and not bg_color:
+            k = int(current_angle // 90 % 4)
+            return simple_rotate_90(frame, k)
 
-        if not Image:
+        if not PIL_INSTALLED or Image is None:
             raise ValueError(
                 'Without "Pillow" installed, only angles that are a multiple of 90'
-                " without centering, translation and background color transformations"
-                ' are supported, please install "Pillow" with `pip install pillow`'
+                ' degrees are supported, and "center", "translate", and "bg_color"'
+                ' must not be used.'
             )
 
-        # build PIL.rotate kwargs
-        kwargs, _locals = ({}, locals())
-        for PIL_rotate_kw_name, (
-            kw_name,
-            supported,
-            min_version,
-        ) in PIL_rotate_kwargs_supported.items():
-            # get the value passed to rotate FX from `locals()` dictionary
-            kw_value = _locals[kw_name]
+        # PIL-based rotation
+        if isinstance(frame, list):
+            frame = np.array([[ord(char) for char in row] for row in frame])
+        
+        img = Image.fromarray(frame.astype(np.uint8))
 
-            if supported:  # if argument supported by PIL version
-                kwargs[PIL_rotate_kw_name] = kw_value
-            else:
-                if kw_value is not None:  # if not default value
+        _bg_color = bg_color if bg_color is not None else ((0, 0, 0) if img.mode == 'RGB' else 255)
+
+        kwargs = {'expand': expand}
+        for PIL_rotate_kw_name, (kw_name, supported, min_version) in PIL_rotate_kwargs_supported.items():
+            kw_value = locals().get(kw_name)
+            if kw_value is not None:
+                if supported:
+                    kwargs[PIL_rotate_kw_name] = kw_value
+                else:
                     warnings.warn(
-                        f"rotate '{kw_name}' argument is not supported"
-                        " by your Pillow version and is being ignored. Minimum"
-                        " Pillow version required:"
-                        f" v{'.'.join(str(n) for n in min_version)}",
-                        UserWarning,
+                        f"rotate '{kw_name}' argument is not supported by your"
+                        " Pillow version and is being ignored. Minimum Pillow version"
+                        f" required: v{'.'.join(str(n) for n in min_version)}"
                     )
 
-        # PIL expects uint8 type data. However a mask image has values in the
-        # range [0, 1] and is of float type.  To handle this we scale it up by
-        # a factor 'a' for use with PIL and then back again by 'a' afterwards.
-        if im.dtype == "float64":
-            # this is a mask image
-            a = 255.0
-        else:
-            a = 1
+        # Ensure 'fillcolor' is always in kwargs
+        if 'fillcolor' not in kwargs:
+            kwargs['fillcolor'] = _bg_color
 
-        # call PIL.rotate
-        return (
-            np.array(
-                Image.fromarray(np.array(a * im).astype(np.uint8)).rotate(
-                    angle, expand=expand, resample=resample, **kwargs
-                )
-            )
-            / a
+        rotated = img.rotate(
+            current_angle,
+            resample=getattr(Image, resample.upper()),
+            **kwargs
         )
+
+        if translate and PIL_rotate_kwargs_supported["translate"][1]:
+            rotated = ImageChops.offset(rotated, int(translate[0]), int(translate[1]))
+
+        return np.array(rotated)
 
     return clip.transform(filter, apply_to=["mask"])
