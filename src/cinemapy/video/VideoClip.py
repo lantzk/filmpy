@@ -12,7 +12,7 @@ from numbers import Real
 
 import numpy as np
 import proglog
-from imageio import imread, imsave
+from imageio.v2 import imread, imsave
 from PIL import Image
 
 from cinemapy.Clip import Clip

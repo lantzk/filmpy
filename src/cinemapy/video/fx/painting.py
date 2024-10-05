@@ -6,7 +6,7 @@ try:
     from skimage.filter import sobel
 except Exception:
     try:
-        from scipy.ndimage.filters import sobel
+        from scipy.ndimage import sobel
     except Exception:
         painting_possible = False
 # -----------------------------------------------------------------------

@@ -149,48 +149,49 @@ class FFMPEG_VideoReader:
         w, h = self.size
         nbytes = self.depth * w * h
 
+        # Check if we've reached the end of the file
+        if self.pos >= self.n_frames:
+            warnings.warn(
+                f"Attempting to read past the end of the file {self.filename}. "
+                "Returning the last valid frame.",
+                UserWarning
+            )
+            return self.last_read
+
         s = self.proc.stdout.read(nbytes)
 
         if len(s) != nbytes:
-            warnings.warn(
-                (
-                    "In file %s, %d bytes wanted but %d bytes read at frame index"
-                    " %d (out of a total %d frames), at time %.02f/%.02f sec."
-                    " Using the last valid frame instead."
+            if len(s) == 0:  # We've reached the end of the file
+                warnings.warn(
+                    f"Reached end of file {self.filename} at frame {self.pos}. "
+                    "Returning the last valid frame.",
+                    UserWarning
                 )
-                % (
-                    self.filename,
-                    nbytes,
-                    len(s),
-                    self.pos,
-                    self.n_frames,
-                    1.0 * self.pos / self.fps,
-                    self.duration,
-                ),
-                UserWarning,
-            )
-            if not hasattr(self, "last_read"):
-                raise OSError(
-                    "cinemapy error: failed to read the first frame of "
-                    f"video file {self.filename}. That might mean that the file is "
-                    "corrupted. That may also mean that you are using "
-                    "a deprecated version of FFMPEG. On Ubuntu/Debian "
-                    "for instance the version in the repos is deprecated. "
-                    "Please update to a recent version from the website."
+                return self.last_read
+            else:  # Partial read, this might indicate a corrupted frame
+                warnings.warn(
+                    (
+                        f"In file {self.filename}, {nbytes} bytes wanted but {len(s)} "
+                        f"bytes read at frame index {self.pos} (out of a total "
+                        f"{self.n_frames} frames), at time {1.0 * self.pos / self.fps:.02f}/"
+                        f"{self.duration:.02f} sec. Using the last valid frame instead."
+                    ),
+                    UserWarning,
                 )
+                if not hasattr(self, "last_read"):
+                    raise OSError(
+                        "cinemapy error: failed to read the first frame of "
+                        f"video file {self.filename}. That might mean that the file is "
+                        "corrupted. That may also mean that you are using "
+                        "a deprecated version of FFMPEG. On Ubuntu/Debian "
+                        "for instance the version in the repos is deprecated. "
+                        "Please update to a recent version from the website."
+                    )
+                return self.last_read
 
-            result = self.last_read
-
-        else:
-            result = (
-                np.frombuffer(s, dtype="uint8")
-                if hasattr(np, "frombuffer")
-                else np.fromstring(s, dtype="uint8")
-            )
-            result.shape = (h, w, len(s) // (w * h))  # reshape((h, w, len(s)//(w*h)))
-            self.last_read = result
-
-        # We have to do this down here because `self.pos` is used in the warning above
+        result = np.frombuffer(s, dtype="uint8")
+        result.shape = (h, w, len(s) // (w * h))
+        self.last_read = result
         self.pos += 1
 
         return result
