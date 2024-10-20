@@ -1,5 +1,3 @@
-"""Misc. useful functions that can be used at many places in the program."""
-
 import os
 import subprocess as sp
 import warnings
@@ -10,12 +8,13 @@ OS_NAME = os.name
 
 
 def cross_platform_popen_params(popen_params):
-    """Wrap with this function a dictionary of ``subprocess.Popen`` kwargs and
-    will be ready to work without unexpected behaviours in any platform.
-    Currently, the implementation will add to them:
-
-    - ``creationflags=0x08000000``: no extra unwanted window opens on Windows
-      when the child process is created. Only added on Windows.
+    """Adjust subprocess parameters for cross-platform compatibility.
+    Parameters:
+        - popen_params (dict): Dictionary containing parameters for the subprocess.
+    Returns:
+        - dict: Updated dictionary of subprocess parameters with platform-specific adjustments.
+    Example:
+        - cross_platform_popen_params({"some_param": "value"}) -> {"some_param": "value", "creationflags": 0x08000000} on Windows
     """
     if OS_NAME == "nt":
         popen_params["creationflags"] = 0x08000000
@@ -23,9 +22,14 @@ def cross_platform_popen_params(popen_params):
 
 
 def subprocess_call(cmd, logger="bar"):
-    """Executes the given subprocess command.
-
-    Set logger to None or a custom Proglog logger to avoid printings.
+    """Execute a subprocess command and log its status.
+    Parameters:
+        - cmd (list of str): The command to execute as a list of strings.
+        - logger (str or Logger, optional): Logger for status messages, default is "bar".
+    Returns:
+        - None: This function does not return a value but raises an OSError on failure.
+    Example:
+        - subprocess_call(["echo", "Hello World"], logger="bar") -> None
     """
     logger = proglog.default_bar_logger(logger)
     logger(message="filmpy - Running:\n>>> " + " ".join(cmd))
@@ -49,27 +53,13 @@ def subprocess_call(cmd, logger="bar"):
 
 
 def convert_to_seconds(time):
-    """Will convert any time into seconds.
-
-    If the type of `time` is not valid,
-    it's returned as is.
-
-    Here are the accepted formats:
-
-    >>> convert_to_seconds(15.4)   # seconds
-    15.4
-    >>> convert_to_seconds((1, 21.5))   # (min,sec)
-    81.5
-    >>> convert_to_seconds((1, 1, 2))   # (hr, min, sec)
-    3662
-    >>> convert_to_seconds('01:01:33.045')
-    3693.045
-    >>> convert_to_seconds('01:01:33,5')    # coma works too
-    3693.5
-    >>> convert_to_seconds('1:33,5')    # only minutes and secs
-    99.5
-    >>> convert_to_seconds('33.5')      # only secs
-    33.5
+    """Convert a time value to seconds.
+    Parameters:
+        - time (str or list/tuple of floats): The time input to convert, either as a string in "HH:MM:SS" format or as a list/tuple of floats representing hours, minutes, and seconds.
+    Returns:
+        - float: The time converted into seconds.
+    Example:
+        - convert_to_seconds("1:30:15") -> 5415.0
     """
     factors = (1, 60, 3600)
 
@@ -80,48 +70,6 @@ def convert_to_seconds(time):
         return time
 
     return sum(mult * part for mult, part in zip(factors, reversed(time)))
-
-
-def deprecated_version_of(func, old_name):
-    """Indicates that a function is deprecated and has a new name.
-
-    `func` is the new function and `old_name` is the name of the deprecated
-    function.
-
-    Returns
-    -------
-
-    deprecated_func
-      A function that does the same thing as `func`, but with a docstring
-      and a printed message on call which say that the function is
-      deprecated and that you should use `func` instead.
-
-    Examples
-    --------
-
-    >>> # The badly named method 'to_file' is replaced by 'write_file'
-    >>> class Clip:
-    >>>    def write_file(self, some args):
-    >>>        # blablabla
-    >>>
-    >>> Clip.to_file = deprecated_version_of(Clip.write_file, 'to_file')
-    """
-    # Detect new name of func
-    new_name = func.__name__
-
-    warning = (
-        f"The function ``{old_name}`` is deprecated and is kept temporarily "
-        "for backwards compatibility.\nPlease use the new name, "
-        f"``{new_name}``, instead."
-    )
-
-    def deprecated_func(*args, **kwargs):
-        warnings.warn("filmpy: " + warning, PendingDeprecationWarning)
-        return func(*args, **kwargs)
-
-    deprecated_func.__doc__ = warning
-
-    return deprecated_func
 
 
 # Non-exhaustive dictionary to store default information.
@@ -140,20 +88,18 @@ extensions_dict = {
     "mp3": {"type": "audio", "codec": ["libmp3lame"]},
     "wav": {"type": "audio", "codec": ["pcm_s16le", "pcm_s24le", "pcm_s32le"]},
     "m4a": {"type": "audio", "codec": ["libfdk_aac"]},
+    **{ext: {"type": "image"} for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]},
 }
-
-for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
-    extensions_dict[ext] = {"type": "image"}
 
 
 def find_extension(codec):
-    """Returns the correspondent file extension for a codec.
-
-    Parameters
-    ----------
-
-    codec : str
-      Video or audio codec name.
+    """Finds the file extension for a given codec.
+    Parameters:
+        - codec (str): The codec for which the file extension is needed.
+    Returns:
+        - str: The file extension associated with the given codec.
+    Example:
+        - find_extension('aac') -> 'mp4'
     """
     if codec in extensions_dict:
         # codec is already the extension

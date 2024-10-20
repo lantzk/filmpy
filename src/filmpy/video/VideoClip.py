@@ -609,11 +609,16 @@ class VideoClip(Clip):
         apply_to = apply_to or []
         return self.transform(lambda get_frame, t: image_func(get_frame(t)), apply_to)
 
-    # --------------------------------------------------------------
-    # C O M P O S I T I N G
-
     def fill_array(self, pre_array, shape=(0, 0)):
-        """TODO: needs documentation."""
+        """Adjust the size of a given array to match a specified shape by trimming or padding.
+        Parameters:
+            - pre_array (ndarray): The original array to be resized.
+            - shape (tuple, optional): Target shape to resize the array (default is (0, 0)).
+        Returns:
+            - ndarray: The resized array, either trimmed or padded to the specified shape.
+        Example:
+            - fill_array(np.array([[1, 2], [3, 4]]), shape=(3, 3)) -> array([[[1, 2, 3], [3, 4, 1], [1, 1, 1]], [[1, 2, 3], [3, 4, 1], [1, 1, 1]], [[1, 2, 3], [3, 4, 1], [1, 1, 1]]])
+        """
         pre_shape = pre_array.shape
         dx = shape[0] - pre_shape[0]
         dy = shape[1] - pre_shape[1]

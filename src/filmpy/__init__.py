@@ -17,7 +17,6 @@ from filmpy.audio.AudioClip import (
 )
 from filmpy.audio.io.AudioFileClip import AudioFileClip
 from filmpy.tools import convert_to_seconds
-from filmpy.version import __version__
 from filmpy.video import fx as vfx
 from filmpy.video import tools as videotools
 from filmpy.video.compositing import transitions as transfx
@@ -75,7 +74,6 @@ del inspect
 
 # Importing with `from filmpy import *` will only import these names
 __all__ = [
-    "__version__",
     "VideoClip",
     "ImageClip",
     "ColorClip",

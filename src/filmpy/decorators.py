@@ -1,5 +1,3 @@
-"""Decorators used by filmpy."""
-
 import inspect
 import os
 
