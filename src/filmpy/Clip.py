@@ -1,7 +1,3 @@
-"""Implements the central object of filmpy, the Clip, and all the methods that
-are common to the two subclasses of Clip, VideoClip and AudioClip.
-"""
-
 import copy as _copy
 from functools import reduce
 from numbers import Real
@@ -55,20 +51,29 @@ class Clip:
         self.memoized_frame = None
 
     def copy(self):
-        """Allows the usage of ``.copy()`` in clips as chained methods invocation."""
+        """
+        Create a shallow copy of the object.
+        Parameters:
+            - self: The object instance to be copied.
+        Returns:
+            - Object: A shallow copy of the object.
+        Example:
+            - obj_copy = obj.copy() -> obj_copy
+        """
         return _copy.copy(self)
 
     @convert_parameter_to_seconds(["t"])
     def get_frame(self, t):
-        """Gets a numpy array representing the RGB picture of the clip,
-        or (mono or stereo) value for a sound clip, at time ``t``.
-
-        Parameters
-        ----------
-
-        t : float or tuple or str
-          Moment of the clip whose frame will be returned.
         """
+        Retrieve a specific frame at time 't', optionally using memoization for efficiency.
+        Parameters:
+            - t (int or float): The time at which to retrieve the frame.
+        Returns:
+            - object: The frame corresponding to the specified time 't'.
+        Example:
+            - get_frame(10) -> frame_object
+        """
+
         # Coming soon: smart error handling for debugging at this point
         if self.memoize:
             if t == self.memoized_t:

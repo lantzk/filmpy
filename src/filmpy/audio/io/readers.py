@@ -122,13 +122,29 @@ class FFMPEG_AudioReader:
         self.pos = np.round(self.fps * start_time)
 
     def skip_chunk(self, chunksize):
-        """TODO: add documentation"""
+        """
+        Skip a specified chunk of audio data from the process stream.
+        Parameters:
+            - chunksize (int): The number of chunks to skip.
+        Returns:
+            - None: This function updates the position in the stream without returning a value.
+        Example:
+            - skip_chunk(1024) -> None
+        """
         _ = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
         self.proc.stdout.flush()
         self.pos = self.pos + chunksize
 
     def read_chunk(self, chunksize):
-        """TODO: add documentation"""
+        """
+        Read a chunk of audio data from a stream.
+        Parameters:
+            - chunksize (float): The number of audio samples to read, rounded to the nearest integer.
+        Returns:
+            - numpy.ndarray: A 2D array with the audio data, padded with zeros if necessary.
+        Example:
+            - read_chunk(1024.5) -> numpy.ndarray([[0.1, 0.2], [0.3, 0.4], ...])
+        """
         # chunksize is not being autoconverted from float to int
         chunksize = int(round(chunksize))
         s = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
@@ -168,7 +184,16 @@ class FFMPEG_AudioReader:
         self.pos = pos
 
     def get_frame(self, tt):
-        """TODO: add documentation"""
+        """
+        Retrieve audio frames corresponding to the specified time or times.
+        Parameters:
+            - tt (np.ndarray or float): Time or array of times for which to retrieve audio frames. 
+              Should be within the duration of the audio clip.
+        Returns:
+            - np.ndarray: An array of audio frames corresponding to the input time(s).
+        Example:
+            - get_frame(np.array([0.5, 1.0, 1.5])) -> np.array([...])
+        """
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
             # 99.99 %  of the cases

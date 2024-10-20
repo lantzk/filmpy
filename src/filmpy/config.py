@@ -1,5 +1,3 @@
-"""Third party programs configuration for filmpy."""
-
 import os
 import subprocess as sp
 from pathlib import Path
@@ -24,7 +22,14 @@ IS_POSIX_OS = os.name == "posix"
 
 
 def try_cmd(cmd):
-    """TODO: add documentation"""
+    """Attempt to execute a command using subprocess.
+    Parameters:
+        - cmd (list): The command to be executed as a list of strings.
+    Returns:
+        - tuple: A tuple containing a boolean indicating success and an error object if failed.
+    Example:
+        - try_cmd(['ls', '-l']) -> (True, None) if successful or (False, Exception) if an error occurs.
+    """
     try:
         popen_params = cross_platform_popen_params(
             {"stdout": sp.PIPE, "stderr": sp.PIPE, "stdin": sp.DEVNULL}

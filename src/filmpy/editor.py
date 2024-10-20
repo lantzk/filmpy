@@ -1,15 +1,3 @@
-"""
-Module meant to make it easy to load the features of filmpy that you will use
-for live editing by simply typing:
-
->>> from filmpy.editor import *
-
-- Starts a pygame session to enable ``clip.show()`` and ``clip.preview()``
-  if pygame is installed
-- Enables ``clip.ipython_display()`` if in an IPython Notebook
-- Allows the use of ``sliders`` if Matplotlib is installed
-"""
-
 import os
 
 import filmpy  # So that we can access filmpy.__all__ later
@@ -28,11 +16,6 @@ except ImportError:
 # adds easy ipython integration
 VideoClip.ipython_display = ipython_display
 AudioClip.ipython_display = ipython_display
-
-
-# -----------------------------------------------------------------
-# Previews: try to import pygame, else make methods which raise
-# exceptions saying to install PyGame
 
 # Hide the welcome message from pygame: https://github.com/pygame/pygame/issues/542
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"

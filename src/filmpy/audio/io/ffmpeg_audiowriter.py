@@ -91,7 +91,15 @@ class FFMPEG_AudioWriter:
         self.proc = sp.Popen(cmd, **popen_params)
 
     def write_frames(self, frames_array):
-        """TODO: add documentation"""
+        """
+        Writes video frames to an FFmpeg process.
+        Parameters:
+            - frames_array (numpy.ndarray): An array containing the frames to be written.
+        Returns:
+            - None: This function does not return a value; it writes frames to FFmpeg.
+        Example:
+            - write_frames(numpy_array)
+        """
         try:
             self.proc.stdin.write(frames_array.tobytes())
         except OSError as err:

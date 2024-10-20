@@ -12,24 +12,14 @@ CLIP_TYPES = {
 
 
 def close_all_clips(objects="globals", types=("audio", "video", "image")):
-    """Closes all clips in a context.
-
-    Follows different strategies retrieving the namespace from which the clips
-    to close will be retrieved depending on the ``objects`` argument, and filtering
-    by type of clips depending on the ``types`` argument.
-
-    Parameters
-    ----------
-
-    objects : str or dict, optional
-      - If is a string an the value is ``"globals"``, will close all the clips
-        contained by the ``globals()`` namespace.
-      - If is a dictionary, the values of the dictionary could be clips to close,
-        useful if you want to use ``locals()``.
-
-    types : Iterable, optional
-      Set of types of clips to close, being "audio", "video" or "image" the supported
-      values.
+    """Close all clips of specified types within a given scope.
+    Parameters:
+        - objects (str or dict-like, optional): Source of objects to inspect and close clips. Defaults to "globals".
+        - types (tuple, optional): Tuple of clip types to close, specified by keys in CLIP_TYPES. Defaults to ("audio", "video", "image").
+    Returns:
+        - None
+    Example:
+        - close_all_clips() -> Closes all global audio, video, and image clips.
     """
     if objects == "globals":  # pragma: no cover
         objects = globals()
