@@ -15,19 +15,21 @@ jobs:
       matrix:
         python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - uses: eifinger/setup-rye@v4
+        id: setup-rye
         with:
-          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-prefix: ${{ matrix.python-version }}
 
+      - name: Pin python-version ${{ matrix.python-version }}
+        run: rye pin ${{ matrix.python-version }}
+        
       - name: Install dependencies
+        if: steps.setup-rye.outputs.cache-hit != 'true'
         run: |
-            curl -sSf https://rye.astral.sh/get | bash
-            echo "$HOME/.local/bin" >> $GITHUB_PATH
-            rye sync
+          rye sync --no-lock
 
       - name: Run tests
         run: rye test
