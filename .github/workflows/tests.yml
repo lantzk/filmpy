@@ -17,10 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install ImageMagick
+      - name: Install ImageMagick and modify policy
         run: |
           sudo apt-get update
           sudo apt-get install -y imagemagick
+          sudo sed -i 's/rights="none" pattern="@\*"/rights="read|write" pattern="@*"/' /etc/ImageMagick-6/policy.xml
 
       - uses: eifinger/setup-rye@v4
         id: setup-rye
