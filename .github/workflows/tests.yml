@@ -1,0 +1,39 @@
+name: Tests
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']  # TODO: Add 3.8, 3.9, 3.10 & check compatibility
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ImageMagick and modify policy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          sudo sed -i 's/rights="none" pattern="@\*"/rights="read|write" pattern="@*"/' /etc/ImageMagick-6/policy.xml
+
+      - uses: eifinger/setup-rye@v4
+        id: setup-rye
+        with:
+          enable-cache: true
+          cache-prefix: ${{ matrix.python-version }}
+
+      - name: Pin python-version ${{ matrix.python-version }}
+        run: rye pin ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: rye sync --no-lock
+
+      - name: Run tests
+        run: rye test
